@@ -63,7 +63,7 @@ function init()
 function runone()
 {
     echo -n "Running test $1 ... "
-    $JAVA_HOME/bin/java $JPATH -jar build/libs/xerojava.jar --logfile testout/$1.log --input $1 > testout/$1.out 2>&1
+    $JAVA_HOME/bin/java $JPATH -jar build/libs/$JARNAME.jar --logfile testout/$1.log --input $1 > testout/$1.out 2>&1
     if [ $? -eq 0 ]; then
 	echo passed
     else
@@ -107,6 +107,8 @@ declare -a RUNTESTS=()
 JPATH=""
 ostype=""
 mkdir -p testout
+JARNAMEFULL=`PWD`
+JARNAME=`basename $JARNAMEFULL`
 
 init
 findtests
