@@ -7,6 +7,8 @@
 
 package org.frc2020.droid;
 
+import org.xero1425.misc.SimArgs;
+
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
@@ -15,17 +17,6 @@ import edu.wpi.first.wpilibj.RobotBase;
  * change the parameter class to the startRobot call.
  */
 public final class Main {
-    private static String simfile = null ;
-    private static String logfile = null ;
-
-    public static String getSimFile() {
-        return simfile ;
-    }
-
-    public static String getLogFile() {
-        return logfile ;
-    }
-
     private Main() {
     }
 
@@ -44,7 +35,7 @@ public final class Main {
                     System.err.println("command line argument --logfile requires an additional argument") ;
                     System.exit(2) ;                    
                 }
-                simfile = args[i] ;
+                SimArgs.InputFileName = args[i];
             }
             else if (args[i].equals("--logfile")) {
                 i++ ;
@@ -52,7 +43,7 @@ public final class Main {
                     System.err.println("command line argument --logfile requires an additional argument") ;
                     System.exit(2) ;                    
                 }
-                logfile = args[i] ;
+                SimArgs.LogFileName = args[i] ;
             }
             else {
                 System.err.println("unknown command line argument '" + args[i] + "'") ;

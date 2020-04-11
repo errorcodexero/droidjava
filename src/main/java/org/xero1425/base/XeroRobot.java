@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.frc2020.droid.Main;
 import org.xero1425.simulator.engine.SimulationEngine;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
@@ -27,6 +26,7 @@ import org.xero1425.misc.MessageDestination;
 import org.xero1425.misc.MessageDestinationFile;
 import org.xero1425.misc.MessageDestinationThumbFile;
 import org.xero1425.misc.SettingsParser;
+import org.xero1425.misc.SimArgs;
 import org.xero1425.misc.XeroPathManager;
 import org.xero1425.base.motors.MotorFactory;
 import org.xero1425.base.tankdrive.TankDriveFollowPathAction;
@@ -37,7 +37,7 @@ public abstract class XeroRobot extends TimedRobot {
     public static final String LoggerName = "xerorobot" ;
     private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
 
-    public XeroRobot(final double period, final boolean simulator) {
+    public XeroRobot(final double period) {
         super(period);
 
         period_ = period;
@@ -92,9 +92,7 @@ public abstract class XeroRobot extends TimedRobot {
         return logger_id_ ;
     }
 
-    protected String getSimulationFileName() {
-        return null ;
-    }
+    protected abstract String getSimulationFileName() ;
 
     public void setRobotSubsystem(RobotSubsystem sub) {
         robot_subsystem_ = sub;
@@ -525,7 +523,7 @@ public abstract class XeroRobot extends TimedRobot {
     }
 
     private void enableMessageLogger() {
-        String logfile = Main.getLogFile() ;
+        String logfile = SimArgs.LogFileName ;
         MessageDestination dest ;
 
         logger_ = new MessageLogger();

@@ -19,6 +19,7 @@ import org.xero1425.base.controllers.AutoController;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MissingParameterException;
+import org.xero1425.misc.SimArgs;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,11 +32,11 @@ public class Droid extends XeroRobot {
     static private byte[] practice_bot_mac_addr = new byte[] { 0x00, -128, 0x2F, 0x17, -119, -111 };
 
     Droid() {
-        super(0.02, true);
+        super(0.02);
     }
 
     public String getSimulationFileName() {
-        String ret = Main.getSimFile() ;
+        String ret = SimArgs.InputFileName ;
         if (ret != null)
             return ret ;
 
