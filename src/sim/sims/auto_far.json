@@ -1,0 +1,90 @@
+{
+    "stimulus" :
+    [
+        {
+            "time" : 0.0,
+            "events" :
+            [
+                {
+                    "model" : "fms",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "start" : 3.0,
+                        "autonomous" : 18.0,
+                        "between" : 0.0,
+                        "teleop" : 0.0,
+                        "fms": false
+                    }
+                },
+                {
+                    "model" : "droidoi",
+                    "instance" : "1",
+                    "values" :
+                    {
+                        "comment" : "set to automode to number 0, near side eight",
+                        "axis0" : -0.1
+                    }
+                },
+                {
+                    "model" : "conveyor",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "place the initial three balls in the robot for an automode",
+                        "start3" : true
+                    }
+                },
+                {
+                    "model" : "turret",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "start the turret facing the outside wall",
+                        "angle" : -90.0
+                    }
+                },                
+                {
+                    "model" : "tankdrive",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "xpos" : 518.0,
+                        "ypos" : 296.0,
+                        "angle" : 180.0
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 8.0,
+            "events" :
+            [
+                {
+                    "model" : "conveyor",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "Ball present at entrance to conveyor",                        
+                        "ball" : true
+                    }
+                }               
+            ]
+        },
+        {
+            "time" : 8.5,
+            "events" :
+            [
+                {
+                    "model" : "conveyor",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "Ball present at entrance to conveyor",                        
+                        "ball" : true
+                    }
+                }               
+            ]
+        }                
+    ]
+}

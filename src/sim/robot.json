@@ -1,0 +1,159 @@
+{
+    "models" :
+    [
+        {
+            "model" : "navx",
+            "instance" : "1"
+        },
+        {
+            "model" : "limelight",
+            "instance" : "1",
+            "props" : {
+                "create_early" : true
+            }
+        },
+        {
+            "model" : "fms",
+            "instance" : "1",
+            "props" : {
+                "start" : 1.0,
+                "autonomous" : 15.0,
+                "between" : 2.0,
+                "teleop" : 135.0,
+                "create_early" : true                
+            }            
+        },
+        {
+            "model" : "tankdrive",
+            "instance" : "1",
+            "props" :
+            {
+                "navx:model" : "navx",
+                "navx:instance" : "1",
+                "text_provider_model" : "conveyor",
+                "text_provider_instance" : "1",
+                "left:motor:1:index" : 1,
+                "left:motor:1:type" : "talonfx",
+                "left:motor:2:index" : 2,
+                "left:motor:2:type" : "talonfx",                
+                "right:motor:1:index" : 3,
+                "right:motor:1:type" : "talonfx",
+                "right:motor:2:index" : 4,
+                "right:motor:2:type" : "talonfx",
+                "right:motor:inverted" : true,
+                "use_motor_encoders" : true,
+                "right:encoder:inverted" : true,
+                "diameter" : 6.0,
+                "scrub" : 1.0,
+                "width" : 34.5,
+                "length" : 37.5,
+                "ticks_per_rev" : 23235.5,
+                "maxvelocity" : 90.0,
+                "maxacceleration" : 90.0
+            }
+        },
+        {
+            "model" : "drivergamepad",
+            "instance" : "1",
+            "props" : {
+                "index" : 0,
+                "axes" : 6,
+                "buttons" : 10,
+                "povs" : 1,
+                "create_early" : true                
+            }
+        },
+        {
+            "model" : "turret",
+            "instance" : "1",
+            "props" : {
+                "turret:motor:type": "sparkmax-brushless",
+                "turret:motor:index": 9,
+                "degrees_per_second_per_volt" : 284,
+                "encoder" : 1,
+                "rmax" : 180.0,
+                "rmin" : -180.0,
+                "emax" : 0.0,
+                "emin" : 5.0,
+                "ec" : 1.33,
+                "rc" : 0
+            }
+        },
+        {
+            "model" : "droid_limelight",
+            "instance" : "1",
+            "props" : {
+                "target_height" : 84.0,
+                "camera_height" : 16.0,
+                "camera_angle" : 20.08,
+                "limelight_model" : "limelight",
+                "limelight_instance" : "1",
+                "tankdrive_model" : "tankdrive",
+                "tankdrive_instance" : "1",
+                "turret_model" : "turret",
+                "turret_instance" : "1"
+            }
+        },
+        {
+            "model" : "droidoi",
+            "instance" : "1",
+            "props" : {
+                "index" : 2,
+                "xbox" : false,
+                "name" : "Error Code Xero Custom OI",
+                "axes" : 8,
+                "buttons" : 16,
+                "povs" : 1,
+                "create_early" : true                
+            }
+        },
+        {
+            "model" : "conveyor",
+            "instance" : "1",
+            "props" : {
+                "intake_model" : "intake",
+                "intake_instance" : "1",
+                "intake:motor:index" : 7,
+                "intake:motor:type" : "sparkmax-brushless",
+                "shooter:motor:index" : 8,
+                "shooter:motor:type" : "sparkmax-brushless",
+                "sensorA": 10,
+                "sensorB": 13,
+                "sensorC": 11,
+                "sensorD": 12,
+                "distance_per_second_per_inch" : 35.0,
+                "distance_per_second_stopped" : 16.0,
+                "positionA" : 0.0,
+                "positionB" : 6.0,
+                "positionC" : 3.0,
+                "positionD" : 30.0,
+                "minpos" : -5.0,
+                "maxpos" : 32.0,
+                "midpos" : 31.0
+            }            
+        },
+        {
+            "model" : "shooter",
+            "instance" : "1",
+            "props" : {
+                "shooter:motor:1:index" : 5,
+                "shooter:motor:1:type" : "sparkmax-brushless",
+                "shooter:motor:2:index" : 6,
+                "shooter:motor:2:type" : "sparkmax-brushless",
+                "kv" : 0.0001311853912,
+                "change" : 10000000.0
+            }
+        },
+        {
+            "model" : "intake",
+            "instance" : "1",
+            "props" : {
+                "updown:motor:index" : 11,
+                "updown:motor:type" : "sparkmax-brushless",
+                "spin:motor:index" : 10,
+                "spin:motor:type" : "sparkmax-brushless",
+                "ticks_per_second_per_volt" : 7000.0
+            }
+        }        
+    ]
+}

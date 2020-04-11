@@ -1,0 +1,505 @@
+#
+# This file describes the droid robot.  This version is for the java robot.
+#
+
+
+# Drivebase motors
+hw:tankdrive:motors:left:1:canid                                1                           # CAN 1
+hw:tankdrive:motors:left:1:type                                 "talon_fx"
+hw:tankdrive:motors:left:2:canid                                2                           # CAN 2
+hw:tankdrive:motors:left:2:type                                 "talon_fx"
+hw:tankdrive:motors:right:1:canid                               3                           # CAN 3
+hw:tankdrive:motors:right:1:type                                "talon_fx"
+hw:tankdrive:motors:right:2:canid                               4                           # CAN 4
+hw:tankdrive:motors:right:2:type                                "talon_fx"
+hw:tankdrive:motors:right:inverted                              true                        # Invert the direction of the right motors
+
+hw:shooter:motor:1:type                                         "sparkmax_brushless"
+hw:shooter:motor:1:canid                                        5                          # CAN 5
+hw:shooter:motor:2:type                                         "sparkmax_brushless"
+hw:shooter:motor:2:canid                                        6                          # CAN 6
+hw:shooter:motor:2:inverted                                     true
+hw:shooter:motor:neutral_mode                                   "coast"
+
+if PRACTICE
+hw:shooter:motor:inverted                                       true
+endif
+
+hw:shooter:encoder:quad:motor                                   true                       # Use encoder in NEO motor
+hw:shooter:encoder:quad:m                                       0.0357142857142857143
+hw:shooter:encoder:quad:b                                       0
+
+if PRACTICE
+hw:shooter:hood                                                 3
+endif
+if COMPETITION
+hw:shooter:hood                                                 4
+endif
+
+hw:conveyor:motors:intake:type                                  "sparkmax_brushless"
+hw:conveyor:motors:intake:canid                                 7                          # CAN 7
+hw:conveyor:motors:intake:neutral_mode                          "brake"
+hw:conveyor:motors:shooter:type                                 "sparkmax_brushless"
+hw:conveyor:motors:shooter:canid                                8                          # CAN 8
+hw:conveyor:motors:shooter:neutral_mode                         "brake"
+if COMPETITION
+hw:conveyor:sensor:a                                            10
+hw:conveyor:sensor:b                                            13
+hw:conveyor:sensor:c                                            11
+hw:conveyor:sensor:d                                            12
+endif
+if PRACTICE
+hw:conveyor:sensor:a                                            10
+hw:conveyor:sensor:b                                            12
+hw:conveyor:sensor:c                                            11
+hw:conveyor:sensor:d                                            13
+endif
+
+hw:turret:motor:type                                            "sparkmax_brushless"
+hw:turret:motor:canid                                           9                          # CAN 9
+hw:turret:motor:inverted                                        true
+hw:turret:encoder:analog                                        1                          # Analog encoder
+hw:turret:encoder:analog:rmin                                   -180.0
+hw:turret:encoder:analog:rmax                                   180.0
+hw:turret:encoder:analog:emin                                   5.0
+hw:turret:encoder:analog:emax                                   0.0
+
+if PRACTICE
+hw:turret:encoder:analog:ec                                     2.45
+endif
+
+if COMPETITION
+hw:turret:encoder:analog:ec                                     1.33
+endif
+
+hw:turret:encoder:analog:rc                                     0.0
+
+hw:intake:collect:motor:type                                   "sparkmax_brushless"
+hw:intake:collect:motor:canid                                  10                          # CAN 10
+hw:intake:motor:type                                           "sparkmax_brushless"
+hw:intake:motor:canid                                          11                          # CAN 11
+hw:intake:encoder:quad:motor                                   true
+hw:intake:encoder:quad:m                                       1.0
+hw:intake:encoder:quad:b                                       0.0
+
+hw:controlpanelrotator:motor:type                               "sparkmax_brushless"
+hw:controlpanelrotator:motor:canid                              12                           # CAN 12
+hw:controlpanelrotator:encoder:quad:motor                       true
+hw:controlpanelrotator:encoder:quad:m                           1
+hw:controlpanelrotator:encoder:quad:b                           0
+if PRACTICE
+hw:controlpanelrotator:servo                                    0
+endif
+
+if COMPETITION
+hw:controlpanelrotator:servo                                    0
+endif
+
+hw:climber:lifter:motor:1:type                                  "sparkmax_brushless"
+hw:climber:lifter:motor:1:canid                                 13                          # CAN 13
+hw:climber:lifter:motor:2:type                                  "sparkmax_brushless"
+hw:climber:lifter:motor:2:canid                                 14                          # CAN 14
+hw:climber:lifter:motor:1:inverted                              true
+hw:climber:lifter:motor:release                                 -10
+hw:climber:lifter:motor:climb                                   10
+hw:climber:lifter:encoder:quad:motor                            true
+hw:climber:lifter:encoder:quad:m                                1
+hw:climber:lifter:encoder:quad:b                                0
+
+hw:climber:traverser:pwmid                                      2
+
+hw:climber:servo:l:pwmid                                        0                           # PWM 2
+hw:climber:servo:r:pwmid                                        1                           # PWM 1
+hw:climber:servo:l:release                                      1.0
+hw:climber:servo:r:release                                      1.0
+hw:climber:servo:l:climb                                        0.0
+hw:climber:servo:r:climb                                        0.0
+
+intake:collector:motor:power                                    1.0
+intake:collector:motor:revpower                                 -1.0
+intake:arm:collecton:pos                                        1550
+intake:arm:collectoff:pos                                       0
+intake:hold:kp                                                   0.001
+intake:hold:ki                                                   0
+intake:hold:kd                                                   0
+intake:hold:kf                                                   0
+intake:hold:min                                                 -0.1
+intake:hold:max                                                 0.1
+intake:hold:imax                                                0
+intake:follower:down:kp                                       0.001
+intake:follower:down:kd                                       0.0
+intake:follower:down:kv                                       0.00012407
+intake:follower:down:ka                                       0.0
+intake:follower:up:kp                                         0.001
+intake:follower:up:kd                                         0.0
+intake:follower:up:kv                                         0.000147929
+intake:follower:up:ka                                         0.0
+intake:goto:threshold                                       10.0       # Within three degrees
+intake:goto:maxd                                            -14000.0     # maximum deceleration
+intake:goto:maxa                                            14000.0     # maximum acceleration
+intake:goto:maxv                                            14000.0     # maximum velocity
+
+#
+# Driver station
+#
+hw:driverstation:hid:driver                                     0               # HID Device Index
+hw:driverstation:hid:oi                                         2               # HID Device Index
+
+
+
+###################################################################################################
+#
+# The sections below describe the software parameters for the various
+# robot subsystems
+#
+###################################################################################################
+
+###################################################################################################
+# tankdrive
+###################################################################################################
+
+#
+# Variables for the tankdrive subsystem code.
+#
+tankdrive:inches_per_tick                                       0.00085
+tankdrive:width                                                 26.75
+tankdrive:scrub                                                 0.9
+
+tankdrive:follower:left:ka                                      0.0003
+tankdrive:follower:left:kv                                      0.005425            # 0.005
+tankdrive:follower:left:kp                                      0.03                # Recommended 0.02032 - 0.03048
+tankdrive:follower:left:kd                                      0.0
+
+tankdrive:follower:right:ka                                     0.0003
+tankdrive:follower:right:kv                                     0.005425            # 0.005
+tankdrive:follower:right:kp                                     0.032               # Recommended 0.02032 - 0.03048
+tankdrive:follower:right:kd                                     0.0
+
+tankdrive:follower:turn_correction                              0
+tankdrive:follower:angle_correction                             -0.03
+
+###################################################################################################
+# shooter
+###################################################################################################
+
+shooter:velocity:kp                                             0
+shooter:velocity:ki                                             0.0
+shooter:velocity:kd                                             0.0
+shooter:velocity:kf                                             0.0001311853912
+shooter:velocity:min                                            -1.0
+shooter:velocity:max                                            1.0
+shooter:velocity:imax                                           0.0
+
+shooter:velocity:ready_margin_percent                           5.0      # If velocity is within % margin from target, consider it ready to shoot
+
+shooter:hold:p                                                  0.0
+shooter:hold:i                                                  0.0
+shooter:hold:d                                                  0.0
+shooter:hold:f                                                  0.0
+shooter:hold:min                                                -1.0
+shooter:hold:max                                                1.0
+shooter:hold:imax                                               0.0
+
+if COMPETITION
+shooter:hood:down                                               1.0
+shooter:hood:up                                                 0.5
+endif
+
+if PRACTICE
+shooter:hood:down                                               0.7
+shooter:hood:up                                                 0.2
+endif
+
+shooter:aim:hood_up:a                                           0
+shooter:aim:hood_up:b                                           0
+shooter:aim:hood_up:c                                           3600
+
+shooter:aim:max_hood_up                                         120
+shooter:aim:min_hood_down                                       110
+
+shooter:hood:change_time					0.8
+
+#
+# If the drivebase is going faster than this, the hood is
+# forced down
+#
+shooter:hood:down_speed						1.0
+
+###################################################################################################
+# turret
+###################################################################################################
+
+turret:goto:threshold                                           3.0
+turret:goto:maxa                                                250
+turret:goto:maxd                                                -250
+turret:goto:maxv                                                250
+
+turret:hold:kp                                                   0.001
+turret:hold:ki                                                   0
+turret:hold:kd                                                   0
+turret:hold:kf                                                   0
+turret:hold:min                                                 -0.3
+turret:hold:max                                                 0.3
+turret:hold:imax                                                0.0
+
+turret:follow:kp                                                 0.014084508
+turret:follow:ki                                                 0
+turret:follow:kd                                                 0.0
+turret:follow:kf                                                 0
+turret:follow:min                                                -1
+turret:follow:max                                                1
+turret:follow:imax                                               0
+
+turret:follower:up:kp                                                 0
+turret:follower:up:ki                                                 0
+turret:follower:up:kd                                                 0
+turret:follower:up:kv                                                 0.003521127
+turret:follower:up:ka                                                 0
+turret:follower:up:min                                               -1
+turret:follower:up:max                                               1
+turret:follower:up:imax                                              0
+
+turret:follower:down:kp                                                 0
+turret:follower:down:ki                                                 0
+turret:follower:down:kd                                                 0
+turret:follower:down:kv                                                 0.003521127
+turret:follower:down:ka                                                 0
+turret:follower:down:min                                               -1
+turret:follower:down:max                                               1
+turret:follower:down:imax                                              0
+turret:fire_threshold                                           0.5
+turret:min                                                      -40 # The minimum safe angle.
+turret:max                                                      40  # The maximum safe angle.
+
+# If we apply more than safety_threshold_power for longer than safety_threshold_time
+# and the turret doesn't move more than safety_threshold_dist degrees, the turret
+# will enter an emergency stop state (until the robot code is restarted).
+turret:safety_threshold_time                                    1
+turret:safety_threshold_power                                   0.1
+turret:safety_threshold_dist                                    2
+
+###################################################################################################
+# controlpanelrotator
+###################################################################################################
+
+controlpanelrotator:hold:p                                      0
+controlpanelrotator:hold:i                                      0
+controlpanelrotator:hold:d                                      0
+controlpanelrotator:hold:f                                      0
+controlpanelrotator:hold:min                                    0
+controlpanelrotator:hold:max                                    1
+controlpanelrotator:hold:imax                                   1
+
+controlpanelrotator:arm:up                                      1
+controlpanelrotator:arm:down                                    0
+
+###################################################################################################
+# conveyor
+###################################################################################################
+
+conveyor:verbose                                                true
+conveyor:motorstates:stopped:intake                             0
+conveyor:motorstates:stopped:shooter                            0
+
+conveyor:motorstates:collect_motor_only:intake                  1
+conveyor:motorstates:collect_motor_only:shooter                 0
+
+conveyor:motorstates:rev_collect_motor_only:intake              1
+conveyor:motorstates:rev_collect_motor_only:shooter             0
+
+conveyor:motorstates:move_towards_shooter:intake                1
+conveyor:motorstates:move_towards_shooter:shooter               1
+
+conveyor:motorstates:move_towards_intake:intake                 -1
+conveyor:motorstates:move_towards_intake:shooter                -1
+
+conveyor:receive:timeout                                        0.5
+conveyor:receive:intake_side_power                              1.0
+conveyor:receive:shooter_side_power                             1.0
+
+conveyor:emit:intake_side_power                                 1.0
+conveyor:emit:shooter_side_power                                1.0
+
+conveyor:eject:intake_side_power                                -1.0
+conveyor:eject:shooter_side_power                               -1.0
+
+conveyor:prepare_receive:to_intake:intake_side_power            -1.0
+conveyor:prepare_receive:to_intake:shooter_side_power           -1.0
+conveyor:prepare_receive:to_shooter:intake_side_power           1.0
+conveyor:prepare_receive:to_shooter:shooter_side_power          1.0
+
+conveyor:prepare_emit:intake_side_power                         1.0
+conveyor:prepare_emit:shooter_side_power                        1.0
+
+conveyor:prepare_receive:timeout                                0.8
+
+###################################################################################################
+# Variables for the driver gamepad
+###################################################################################################
+
+driver:power:max                                                1.0
+driver:power:default                                            0.6
+driver:turn:max                                                 0.8
+driver:turn:default                                             0.4
+driver:power:slowby                                             0.5
+driver:power:tolerance                                          0.05
+driver:power:nudge_straight                                     0.2
+driver:power:nudge_rotate                                       0.2
+driver:nudge_time                                               0.1
+driver:zerolevel                                                0.1
+
+###################################################################################################
+# Climber
+###################################################################################################
+
+# Set to true to force the climber to always operate in field mode, even when not connected to FMS.
+# In field mode, the climber's max downward velocity is limited to 10% below 1000, and 0% below 0.
+# In pit mode, the climber's max downward velocity is always limited to 10%.
+
+climber:force_field_mode                                        true
+
+climber:climb_height                                            9450
+climber:max_height                                              9600
+climber:power:up                                                0.4
+climber:power:down                                              -1
+climber:power:left                                              -1.0
+climber:power:right                                             1.0
+climber:low_power_limit						0.1
+climber:low_power_height					100
+
+climber:lifter:follower:up:kp                                   0.00001
+climber:lifter:follower:up:ki                                   0
+climber:lifter:follower:up:kd                                   0
+climber:lifter:follower:up:kv                                   0.00026455
+climber:lifter:follower:up:ka                                   0
+
+climber:lifter:follower:down:ki                                 0
+climber:lifter:follower:down:kd                                 0
+climber:lifter:follower:down:kv                                 0.000268673
+climber:lifter:follower:down:kp                                 0
+climber:lifter:follower:down:ka                                 0
+
+climber:lifter:goto:threshold                                   3.0
+climber:lifter:goto:maxa                                        3700
+climber:lifter:goto:maxd                                        -3700
+climber:lifter:goto:maxv                                        3700
+
+climber:lifter:hold:p                                                   0.001
+climber:lifter:hold:i                                                   0
+climber:lifter:hold:d                                                   0
+climber:lifter:hold:f                                                   0
+climber:lifter:hold:min                                                 0
+climber:lifter:hold:max                                                 0
+climber:lifter:hold:imax                                                0
+
+##----------------------
+
+###################################################################################################
+# droidvision
+###################################################################################################
+
+# 
+# Amy
+#
+droidvision:camera_angle                                        20.08
+shooter:aim:hood_down:a                                         0.0324
+shooter:aim:hood_down:b                                         -12.516
+shooter:aim:hood_down:c                                         5900
+targettracker:camera_offset_angle                               -2.0
+
+#
+# Bill
+#
+# droidvision:camera_angle                                        21.74
+# shooter:aim:hood_down:a                                         0.0324
+# shooter:aim:hood_down:b                                         -12.516
+# shooter:aim:hood_down:c                                         5803
+# targettracker:camera_offset_angle                              1.0
+
+#
+# Cladio
+#
+# droidvision:camera_angle                                        21.54
+# shooter:aim:hood_down:a                                         0.0348
+# shooter:aim:hood_down:b                                         -13.359
+# shooter:aim:hood_down:c                                         5875
+# targettracker:camera_offset_angle                               -1.0
+
+droidvision:camera_height					16.0
+droidvision:target_height                                	84.0
+
+limelight:camera_latency                                        0.011
+limelight:network_latency                                       0.010
+
+gamepiecemanipulator:fire:max_drivebase_velocity                15
+gamepiecemanipulator:fire:max_camera_sample_age                 5.0
+
+###################################################################################################
+# oi
+###################################################################################################
+
+oi:automode                                                     0
+
+oi:shoot_collect_mode                                           11
+oi:eject                                                        8
+oi:collect_onoff                                                14
+
+oi:climb_lock                                                   10              # Toggle switch
+oi:climb_deploy                                                 5               # Push button
+oi:climb_secure                                                 8               # Push button
+oi:climb_up                                                     1               # Joystick axis
+oi:climb_down                                                   2               # Joystick axis
+oi:traverse_left                                                3               # Joystick axis
+oi:traverse_right                                               4               # Joystick axis
+
+oi:manual_shoot_mode                                            9               # Switch to manual shoot mode
+oi:manual_shoot_fire                                            7               # Shoot in manual mode
+
+###################################################################################################
+# targettracker
+###################################################################################################
+# The location of the target on the field.
+targettracker:target:x                                          0
+targettracker:target:y                                          30  # placeholder
+
+# In order to attempt camera tracking, db-estimated angle to target must be less than this value
+# This helps prevent us from trying to track the wrong target
+targettracker:camera_targetting_max_angle                       45
+
+targettracker:turret_lock_threshold                             1.0
+
+#
+# The drive must be moving slower than this speed (in inches per second)
+# for the target tracker to return a value target
+#
+targettracker:fire:max_drivebase_velocity			1.0
+
+###################################################################################################
+#
+# The sections below defines the bahavior of variour misc robot capabilities
+#
+###################################################################################################
+
+#
+# Enable plotting.  Plot data is stored in the network tables and display
+# programs read the data from the network tables
+#
+plotting:enabled                                               true
+
+#
+# Shoot test parameters
+#
+shoottest:shoot_delay                                         0.1
+shoottest:velocity                                            4000
+shoottest:hold                                                true
+
+#
+# These control test modes for the robot.  They are used by the DroidTestTuneMode automode.  Note
+# this active value below is ignored if we are connected to the field.
+#
+auto:testmode:active                                          true
+auto:testmode:which                                           21
+auto:testmode:distance                                        0
+auto:testmode:power                                           0.5
+auto:testmode:duration                                        10
+auto:testmode:name                                           "test_curve"

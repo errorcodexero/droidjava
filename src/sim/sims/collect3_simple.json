@@ -1,0 +1,206 @@
+{
+    "stimulus" :
+    [
+        {
+            "time" : 0.0,
+            "events" :
+            [
+                {
+                    "model" : "fms",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "start" : 1.0,
+                        "autonomous" : 0.0,
+                        "between" : 0.0,
+                        "teleop" : 10.0
+                    }
+                },
+                {
+                    "model" : "turret",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "start the turret facing the outside wall",
+                        "angle" : -90.0
+                    }
+                },                   
+                {
+                    "model" : "droidoi",
+                    "instance" : "1",
+                    "values" :
+                    {
+                        "comment" : "Collect/shoot mode switch set to collect",
+                        "button11" : 0
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 4.0,
+            "asserts" :
+            [
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "readyToCollect",
+                    "value" : true
+                },
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "readyToFire",
+                    "value" : false
+                }                
+            ]
+        },        
+        {
+            "time" : 4.1,
+            "events" :
+            [
+                {
+                    "model" : "droidoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "Press the collect button",                               
+                        "button14" : true
+                    }
+                }
+            ]
+        },          
+        {
+            "time" : 5.0,
+            "events" :
+            [
+                {
+                    "model" : "conveyor",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "ball" : true
+                    }
+                }               
+            ]
+        },
+        {
+            "time" : 5.95,
+            "asserts" :
+            [
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "ballcount",
+                    "value" : 1
+                },
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "readyToCollect",
+                    "value" : true
+                },
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "readyToFire",
+                    "value" : false
+                }                  
+            ]
+        },
+        {
+            "time" : 6.0,
+            "events" :
+            [
+                {
+                    "model" : "conveyor",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "ball" : true
+                    }
+                }               
+            ]
+        },
+        {
+            "time" : 6.95,
+            "asserts" :
+            [
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "ballcount",
+                    "value" : 2
+                },
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "readyToCollect",
+                    "value" : true
+                },
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "readyToFire",
+                    "value" : false
+                }
+            ]
+        },        
+        {
+            "time" : 7.0,
+            "events" :
+            [
+                {
+                    "model" : "conveyor",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "ball" : true
+                    }
+                }               
+            ]
+        },
+        {
+            "time" : 7.95,
+            "asserts" :
+            [
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "ballcount",
+                    "value" : 3
+                },
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "readyToCollect",
+                    "value" : true
+                },
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "readyToFire",
+                    "value" : false
+                }                
+            ]
+        },           
+        {
+            "time" : 8.0,
+            "events" :
+            [
+                {
+                    "model" : "droidoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "button14" : false
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 9.0,
+            "asserts" :
+            [
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "readyToCollect",
+                    "value" : true
+                },
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "readyToFire",
+                    "value" : false
+                }                
+            ]
+        }        
+    ]
+}

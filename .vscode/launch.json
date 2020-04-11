@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - Main",
+      "request": "launch",
+      "mainClass": "org.frc2020.droid.Main",
+      "projectName": "xerojava"
+    },
+    {
+      "type": "wpilib",
+      "name": "WPILib Desktop Debug",
+      "request": "launch",
+      "desktop": true
+    },
+    {
+      "type": "wpilib",
+      "name": "WPILib roboRIO Debug",
+      "request": "launch",
+      "desktop": false
+    }
+  ]
+}

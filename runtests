@@ -1,0 +1,114 @@
+#!/bin/bash
+
+function findtests()
+{
+    FILES=`find src/sim/sims -name \*.json -print`
+    for FILE in $FILES; do
+	ONE=${FILE%.*}
+	TWO=${ONE##*/}
+	TESTS=($TWO ${TESTS[@]})
+    done
+}
+
+function detectos()
+{
+    myname="$(uname -s)"
+    case "${myname}" in
+	Linux*) ostype="linux";;
+	Darwin*) ostype="macos";;
+	CYGWIN*) ostype="windows";;
+	*) ostype="unknown";;
+    esac
+}
+
+function initwin()
+{
+    export JAVA_HOME="C:/users/public/wpilib/2020/jdk"
+    echo "initialzing for windows"
+    PATH=build/tmp/jniExtractDir:$PATH
+}
+
+function initmacos()
+{
+    echo "initialzing for macos"
+    export JAVA_HOME=~/wpilib/2020/jdk
+    export PATH=build/tmp/jniExtractDir:$PATH
+    export DYLD_LIBRARY_PATH=build/tmp/jniExtractDir:$DYLD_LIBRARY_PATH
+    JPATH="-Djava.library.path=build/tmp/jniExtractDir:/Users/bwg/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."
+}
+
+function initlinux()
+{
+    echo "initialzing for linux"
+    JPATH="-Djava.library.path=build/tmp/jniExtractDir:/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"
+    export JAVA_HOME=~/wpilib/2020/jdk
+    export LD_LIBRARY_PATH=build/tmp/jniExtractDir:$LD_LIBRARY_PATH
+}
+
+function init()
+{
+    detectos
+    if [ $ostype == "linux" ]; then
+	initlinux
+    elif [ $ostype == "macos" ]; then
+	initmacos
+    elif [ $ostype == "windows" ]; then
+	initwin
+    else
+	echo "unknown operating system"
+	exit 1
+    fi
+}
+
+function runone()
+{
+    echo -n "Running test $1 ... "
+    $JAVA_HOME/bin/java $JPATH -jar build/libs/xerojava.jar --logfile testout/$1.log --input $1 > testout/$1.out 2>&1
+    if [ $? -eq 0 ]; then
+	echo passed
+    else
+	echo failed
+    fi	
+}
+
+function prunetests()
+{
+    if [ $# -eq 1 ]; then
+	for TEST in ${TESTS[@]}; do
+	    if [[ $TEST =~ $1 ]]; then
+		RUNTESTS=(${RUNTESTS[@]} $TEST)
+	    fi
+	done
+    else
+	RUNTESTS=${TESTS[@]}
+    fi
+}
+
+function runtests()
+{
+    echo -n "Running tests:"
+    first=true
+    for TEST in ${RUNTESTS[@]}; do
+	if [ $first == "false" ]; then
+	    echo -n ","
+	fi
+	echo -n $TEST
+	first=false
+    done
+    echo
+    
+    for TEST in ${RUNTESTS[@]}; do
+	runone $TEST
+    done
+}
+
+declare -a TESTS=()
+declare -a RUNTESTS=()
+JPATH=""
+ostype=""
+mkdir -p testout
+
+init
+findtests
+prunetests $@
+runtests

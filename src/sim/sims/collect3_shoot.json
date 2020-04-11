@@ -1,0 +1,197 @@
+{
+    "stimulus" :
+    [
+        {
+            "time" : 0.0,
+            "events" :
+            [
+                {
+                    "model" : "fms",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "start" : 1.0,
+                        "autonomous" : 0.0,
+                        "between" : 0.0,
+                        "teleop" : 15.0
+                    }
+                },
+                {
+                    "model" : "droidoi",
+                    "instance" : "1",
+                    "values" :
+                    {
+                        "comment" : "Collect/shoot mode switch set to collect",                        
+                        "button11" : false
+                    }
+                },
+                {
+                    "model" : "turret",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "start the turret facing the outside wall",
+                        "angle" : -90.0
+                    }
+                },                   
+                {
+                    "model" : "tankdrive",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "xpos" : 445.0,
+                        "ypos" : 92.0,
+                        "angle" : 180.0
+                    }
+                }                
+            ]
+        },
+        {
+            "time" : 4.0,
+            "asserts" :
+            [
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "readyToCollect",
+                    "value" : true
+                },
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "readyToFire",
+                    "value" : false
+                }                
+            ]
+        },
+        {
+            "time" : 4.5,
+            "events" :
+            [
+                {
+                    "model" : "droidoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "Press the collect button",                           
+                        "button14" : true
+                    }
+                }
+            ]
+        },          
+        {
+            "time" : 5.0,
+            "events" :
+            [
+                {
+                    "model" : "conveyor",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "ball" : true
+                    }
+                }               
+            ]
+        },
+        {
+            "time" : 5.95,
+            "asserts" :
+            [
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "ballcount",
+                    "value" : 1
+                }               
+            ]
+        },     
+        {
+            "time" : 6.0,
+            "events" :
+            [
+                {
+                    "model" : "conveyor",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "ball" : true
+                    }
+                }               
+            ]
+        },
+        {
+            "time" : 6.95,
+            "asserts" :
+            [
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "ballcount",
+                    "value" : 2
+                }               
+            ]
+        },         
+        {
+            "time" : 7.0,
+            "events" :
+            [
+                {
+                    "model" : "conveyor",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "ball" : true
+                    }
+                }               
+            ]
+        },
+        {
+            "time" : 7.5,
+            "events" :
+            [
+                {
+                    "model" : "droidoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "release the collect button",
+                        "button14" : false
+                    }
+                }
+            ]
+        },          
+        {
+            "time" : 7.52,
+            "events" :
+            [
+                {
+                    "model" : "droidoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "set the collect/shoot switch to shoot",                        
+                        "button11" : true
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 7.95,
+            "asserts" :
+            [
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "ballcount",
+                    "value" : 3
+                }               
+            ]
+        },
+        {
+            "time" : 12.0,
+            "asserts" :
+            [
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "ballcount",
+                    "value" : 0
+                }               
+            ]
+        }        
+    ]
+}

@@ -1,0 +1,49 @@
+{
+    "stimulus" :
+    [
+        {
+            "time" : 0.0,
+            "events" :
+            [
+                {
+                    "model" : "fms",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "automode must be set to the correct testmode in droid param file",
+                        "start" : 1.0,
+                        "autonomous" : 30.0,
+                        "between" : 0.0,
+                        "teleop" : 0.0
+                    }
+                },
+                {
+                    "model" : "tankdrive",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "xpos" : 0.0,
+                        "ypos" : 0.0,
+                        "angle" : 0.0
+                    }
+                }                
+            ]
+        },
+        {
+            "time" : 1.0,
+            "events" :
+            [
+                {
+                    "model" : "limelight",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "tv" : 1.0,
+                        "tx" : 30.0,
+                        "ty" : 8.0
+                    }
+                }
+            ]
+        }
+    ]
+}

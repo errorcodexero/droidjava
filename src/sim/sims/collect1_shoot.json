@@ -1,0 +1,159 @@
+{
+    "stimulus" :
+    [
+        {
+            "time" : 0.0,
+            "events" :
+            [
+                {
+                    "model" : "fms",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "start" : 1.0,
+                        "autonomous" : 0.0,
+                        "between" : 0.0,
+                        "teleop" : 20.0
+                    }
+                },
+                {
+                    "model" : "droidoi",
+                    "instance" : "1",
+                    "values" :
+                    {
+                        "comment" : "Collect/shoot mode switch set to collect",                        
+                        "button11" : false
+                    }
+                },
+                {
+                    "model" : "turret",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "start the turret facing the outside wall",
+                        "angle" : -90.0
+                    }
+                },                   
+                {
+                    "model" : "tankdrive",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "position the robot at the initiation line",
+                        "xpos" : 505.0,
+                        "ypos" : 150.0,
+                        "angle" : 180.0
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 4.0,
+            "events" :
+            [
+                {
+                    "model" : "droidoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "Collect button pressed",
+                        "button14" : true
+                    }
+                }
+            ]
+        },          
+        {
+            "time" : 5.0,
+            "events" :
+            [
+                {
+                    "model" : "conveyor",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "Ball present at entrance to conveyor",                        
+                        "ball" : true
+                    }
+                }               
+            ]
+        },
+        {
+            "time" : 5.4,
+            "events" :
+            [
+                {
+                    "model" : "droidoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "Collect button released just after ball detected, be sure we collect it anyway",
+                        "button14" : false
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 6.3,
+            "asserts" :
+            [
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "ballcount",
+                    "value" : 1
+                },
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "readyToCollect",
+                    "value" : true
+                }            
+            ]
+        },
+        {
+            "time" : 6.3,
+            "events" :
+            [
+                {
+                    "model" : "droidoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "set the collect/shoot switch to shoot",                        
+                        "button11" : true
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 7.3,
+            "asserts" :
+            [
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "ballcount",
+                    "value" : 1
+                },
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "readyToCollect",
+                    "value" : false
+                },
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "readyToFire",
+                    "value" : true
+                }                   
+            ]
+        },        
+        {
+            "time" : 9.0,
+            "asserts" :
+            [
+                {
+                    "subsystem" : "conveyor",
+                    "property" : "ballcount",
+                    "value" : 0
+                }               
+            ]
+        }        
+    ]
+}
