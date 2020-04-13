@@ -1,0 +1,156 @@
+{
+    "boards": [
+        {
+            "items": [
+                {
+                    "child": {
+                        "display": "text",
+                        "source": "/SmartDashboard/AutoModeName",
+                        "title": "AutoModeName",
+                        "type": "single"
+                    },
+                    "geometry": {
+                        "height": 143,
+                        "width": 579,
+                        "x": 20,
+                        "y": 16
+                    }
+                },
+                {
+                    "child": {
+                        "display": "text",
+                        "source": "/SmartDashboard/AutoModeNumber",
+                        "title": "AutoModeNumber",
+                        "type": "single"
+                    },
+                    "geometry": {
+                        "height": 143,
+                        "width": 579,
+                        "x": 22,
+                        "y": 164
+                    }
+                },
+                {
+                    "child": {
+                        "display": "text",
+                        "source": "/SmartDashboard/turret:pos",
+                        "title": "Turret Position",
+                        "type": "single"
+                    },
+                    "geometry": {
+                        "height": 143,
+                        "width": 579,
+                        "x": 22,
+                        "y": 309
+                    }
+                }
+            ],
+            "title": "Compete"
+        },
+        {
+            "items": [
+                {
+                    "child": {
+                        "display": "color",
+                        "source": "/SmartDashboard/A",
+                        "title": "A",
+                        "type": "single"
+                    },
+                    "geometry": {
+                        "height": 102,
+                        "width": 100,
+                        "x": 32,
+                        "y": 26
+                    }
+                },
+                {
+                    "child": {
+                        "display": "color",
+                        "source": "/SmartDashboard/B",
+                        "title": "B",
+                        "type": "single"
+                    },
+                    "geometry": {
+                        "height": 102,
+                        "width": 100,
+                        "x": 32,
+                        "y": 131
+                    }
+                },
+                {
+                    "child": {
+                        "display": "color",
+                        "source": "/SmartDashboard/C",
+                        "title": "C",
+                        "type": "single"
+                    },
+                    "geometry": {
+                        "height": 102,
+                        "width": 100,
+                        "x": 32,
+                        "y": 234
+                    }
+                },
+                {
+                    "child": {
+                        "display": "color",
+                        "source": "/SmartDashboard/D",
+                        "title": "D",
+                        "type": "single"
+                    },
+                    "geometry": {
+                        "height": 102,
+                        "width": 100,
+                        "x": 32,
+                        "y": 337
+                    }
+                },
+                {
+                    "child": {
+                        "display": "text",
+                        "source": "/SmartDashboard/ballcount",
+                        "title": "ballcount",
+                        "type": "single"
+                    },
+                    "geometry": {
+                        "height": 102,
+                        "width": 100,
+                        "x": 134,
+                        "y": 26
+                    }
+                }
+            ],
+            "title": "Conveyor"
+        },
+        {
+            "items": [
+            ],
+            "title": "Intake"
+        },
+        {
+            "items": [
+            ],
+            "title": "Turret"
+        },
+        {
+            "items": [
+            ],
+            "title": "Shooter"
+        },
+        {
+            "items": [
+            ],
+            "title": "Climber"
+        }
+    ],
+    "current_tab": 5,
+    "tabs": [
+        "Compete",
+        "Conveyor",
+        "Intake",
+        "Turret",
+        "Shooter",
+        "Climber"
+    ],
+    "version": "1"
+}

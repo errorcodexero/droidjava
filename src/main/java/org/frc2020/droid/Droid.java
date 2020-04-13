@@ -8,6 +8,7 @@
 package org.frc2020.droid;
 
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc2020.droid.automodes.DroidAutoController;
 import org.frc2020.droid.droidsubsystem.DroidRobotSubsystem;
 import org.xero1425.simulator.engine.ModelFactory;
@@ -107,6 +108,9 @@ public class Droid extends XeroRobot {
     }
 
     protected void loadPathsFile() throws Exception {
-        super.loadPathsFile(); ;
+        super.loadPathsFile();
+
+        Boolean[] values = new Boolean[] { true, false, false, true} ;
+        SmartDashboard.putBooleanArray("testarray", values) ;
     }
 }
