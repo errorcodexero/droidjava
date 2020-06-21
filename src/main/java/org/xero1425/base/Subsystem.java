@@ -13,7 +13,102 @@ import org.xero1425.misc.SettingsValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/// \brief the base class for all subsystems that make up the robot.
+/// The subsystem class manages the interaction of subsytems with the robot control loop for each
+/// subsystem.  A subsystem goes through a specific lifecycle.
+/// <table>
+/// <caption id="multi_row">Subsystemn lifecycle</caption>
+/// <tr><th>State<th>Purpose        <th>Column 3
+/// <tr><td rowspan="2">cell row=1+2,col=1<td>cell row=1,col=2<td>cell row=1,col=3
+/// <tr><td rowspan="2">cell row=2+3,col=2                    <td>cell row=2,col=3
+/// <tr><td>cell row=3,col=1                                  <td rowspan="2">cell row=3+4,col=3
+/// <tr><td colspan="2">cell row=4,col=1+2
+/// <tr><td>cell row=5,col=1              <td colspan="2">cell row=5,col=2+3
+/// <tr><td colspan="2" rowspan="2">cell row=6+7,col=1+2      <td>cell row=6,col=3
+/// </table>
+///
 public class Subsystem {
+    //
+    // The current action assigned to this subsystme
+    //
+    private Action action_;
+
+    //
+    // The default action to run when no action is assigned
+    //
+    private Action default_action_;
+
+    //
+    // THe parent subsystem of this subsystem
+    //
+    private final Subsystem parent_;
+
+    //
+    // The name of this subsystem
+    //
+    private final String name_;
+
+    //
+    // The children subsystem of this subsystem
+    //
+    private final List<Subsystem> children_;
+
+    //
+    // The main robot object
+    //
+    private XeroRobot robot_;
+
+    //
+    // The ID for logging subsystem related messages to the log file
+    //
+    private final int logger_id_ ;
+
+    //
+    // If true, the default action actually finished (we don't really want this to happen)
+    //
+    private boolean finished_default_ ;
+
+    //
+    // The total time spent running code in this subsystem.  This captures the compute state
+    // run time since this is the method that takes a lot of time in time critical subsystem code.
+    //
+    private double total_time_ ;
+
+    //
+    // The number of times this subsystem has been run
+    //
+    private int total_cnt_ ;
+
+    //
+    // The maximum time spent on any one robot loop in the code for this subsystem
+    //
+    private double max_time_ ;
+
+    //
+    // The minimum time spend on any one robot loop in the code for this subsystem
+    //
+    private double min_time_ ;
+
+    //
+    // The output format for logging information about the subsystem run times
+    //
+    private DecimalFormat fmt_ ;
+
+    //
+    // If true, this subsystem logs much information
+    //
+    private boolean verbose_ ;
+
+    /// \brief used to give the display type for a value
+    public enum DisplayType {
+        Always,                 ///< Always display this value
+        Verbose,                ///< Display this value when running
+        Disabled,               ///< Display only when the robot is disabled
+    } ;
+
+    /// \brief Create a new subsystem
+    /// \param parent the parent for the current subsystem
+    /// \param name the name of the current subsystem
     public Subsystem(final Subsystem parent, final String name) {
         parent_ = parent;
         name_ = name;
@@ -51,10 +146,21 @@ public class Subsystem {
         }
     }
 
-    public SettingsValue getProperty(String name_) {
+    /// \brief returns a property for the simulation system.
+    /// This base class always returns null.  This method is expected to be overridden
+    /// in a derived class to return subsystem specific properties.
+    /// \param name the name of the property to return
+    /// \returns always returns null
+    public SettingsValue getProperty(String name) {
         return null ;
     }
 
+    /// \brief returns a subsystem by name.
+    /// If this subsystem has the requested name, this subsystem is returned.  Otherwise
+    /// all of the children for the current subsystem are searched recursively until a
+    /// subsystem with the name given is found.
+    /// \param name the name of the subsystem desired
+    /// \returns the subsystem with the given name, or null if it does not exist within this subsystem
     public Subsystem getSubsystemByName(String name) {
         if (name_.equals(name))
             return this ;
@@ -62,6 +168,11 @@ public class Subsystem {
         return getChildByName(name) ;
     }
 
+    /// \brief get a child subsystem by name
+    /// All child subsystem are searched recursively until a subsystem with the name given
+    /// is found.  If a subsystem with the given name is not found, null is returned
+    /// \param name the name of the subsystem of interest
+    /// \returns the subsystem with the given nama, or null if a subsystem with the name does not exist
     public Subsystem getChildByName(String name) {
         for(Subsystem child: children_) {
             Subsystem ret = child.getChildByName(name) ;
@@ -75,43 +186,78 @@ public class Subsystem {
         return null ;
     }
 
+    /// \brief returns the name of the current subsystem
+    /// \returns the name of the current subsystem
     public String getName() {
         return name_;
     }
 
+    /// \brief returns the parent of the subsystem
+    /// \returns the parent of the subsystem
     public Subsystem getParent() {
         return parent_;
     }
 
+    /// \brief returns a reference to the robot object
+    /// \returns a reference to the robot object
     public XeroRobot getRobot() {
         return robot_;
     }
 
+    /// \brief return the logger ID for message assocaited with this subsystem
+    /// \returns the logger iD for message associated with this subsystem
     public int getLoggerID() {
         return logger_id_ ;
     }
 
+    /// \brief add a child subsystem to this current subystem
+    /// \param sub the subsystem to add as a child
     public void addChild(final Subsystem sub) throws Exception {
         children_.add(sub);
     }
 
+    /// \brief initialize the subsystem. 
+    /// This is called at the start of the robot loop of each type.  In other words it is
+    /// called at the start of autonomous (LoopType.Autonomous), teleop (LoopType.Teleop),
+    /// and disabled (LoopType.Disabled).
+    /// \param ltype the loop type we are running
     public void init(LoopType ltype) {
         for(Subsystem sub : children_)
             sub.init(ltype);        
     }
 
+    /// \brief This method is called when the robot enters the disabled state.
+    /// It is used to reset the hardware of the robot.  Keep in mind the robot enters
+    /// the disabled state at the start of robot execution, between autonomous and
+    /// teleop, and after teleop is complete.  This method can be used to reset hardware
+    /// actions.  For instance, there was a turret rotating at the end of auto, this method
+    /// could be used to reset the motors to stopped for the turret so they did not start
+    /// up immediately when teleop begins.
     public void reset() {
         for(Subsystem sub : children_)
             sub.reset() ; 
     }
 
+    /// \brief reservered for future use
     public void selfTest() {
     }
 
+    /// \brief this method is called during hardware initialization.
+    /// It is called after all of the subsystms are constructure and after computeState() has been
+    /// called once so that the internal state of each subsystem is valid.
     public void postHWInit() throws Exception {
         for(Subsystem sub : children_)
             sub.postHWInit();
     }
+
+    /// \brief this method computes the current state of the subsystem.
+    /// This method is called when the robot is disabled, in auto mode, or in teleop mode.  This
+    /// method calls subsystem specific computeMyState() which should be implemented by any
+    /// derived class.  This specific implementation keeps track of execution time of the
+    /// subsystem state computations as this is the most CPU intensive operation of the robot.
+    /// Note, this method also catches all exceptions from the computeMyState() method keeping
+    /// the exception from propogating up and crashing the robot code.
+    ///
     public void computeState() {
         try {
             double start = getRobot().getTime() ;
@@ -147,6 +293,11 @@ public class Subsystem {
         }
     }
 
+    /// \brief this method is called in robot loop to set any hardware outputs
+    /// This method is called in auto mode and teleop mode.  It takes the current state of the
+    /// robot combined with the action assigned to the subsystem and determines the outputs
+    /// required for actuators.
+    ///
     public void run() throws Exception {
         if (action_ != null)
         {
@@ -196,10 +347,17 @@ public class Subsystem {
             sub.run();        
     }
 
+    /// \brief set the current action for the subsystem
+    /// \param act the action to set
+    /// \returns true if the action was accepted, false if not
     public boolean setAction(final Action act) {
         return setAction(act, false) ;
     }
 
+    /// \brief set the current action for the subsystem
+    /// \param act the action to set
+    /// \param parent_busy_ok ok to assign action if a parent is busy
+    /// \returns true if the action was accepted, false if not
     public boolean setAction(final Action act, boolean parent_busy_ok) {
         if (act == default_action_ && act != null) {
             MessageLogger logger = getRobot().getMessageLogger() ;
@@ -258,10 +416,14 @@ public class Subsystem {
         return true ;
     }
 
+    /// \brief returns the currently assigned action
+    /// \returns the currently assigned action
     public Action getAction() {
         return action_;
     }
 
+    /// \brief set the default action for the subsystem
+    /// \param act the action to assign to the subsystem
     public void setDefaultAction(final Action act) {
         finished_default_ = false ;
 
@@ -302,38 +464,105 @@ public class Subsystem {
         }
     }
 
+    /// \brief return the default action for the subsystem
+    /// \returns the default action for the subsystem
     public Action getDefaultAction() {
         return default_action_;
     }
 
+    /// \brief cancel the currently assigned action.
+    /// Cancel requires that the action end immediately prior to this call returning
     public void cancelAction() {
         cancelAction(true) ;
     }
 
-    public enum DisplayType {
-        Always,                 // Always display this value
-        Verbose,                 // Display this value when running
-        Disabled,               // Display only when the robot is disabled
-    } ;
-
+    /// \brief put a value on the driver station dashboard
+    /// \param name name of the value to display
+    /// \param dtype indicates when the value should be displayed
+    /// \value the value to display
     public void putDashboard(String name, DisplayType dtype, boolean value) {
         if (shouldDisplay(dtype))
             SmartDashboard.putBoolean(name, value) ;
     }
 
+    /// \brief put a value on the driver station dashboard
+    /// \param name name of the value to display
+    /// \param dtype indicates when the value should be displayed
+    /// \value the value to display
     public void putDashboard(String name, DisplayType dtype, double value) {
         if (shouldDisplay(dtype))
             SmartDashboard.putNumber(name, value) ;
     }
 
+    /// \brief put a value on the driver station dashboard
+    /// \param name name of the value to display
+    /// \param dtype indicates when the value should be displayed
+    /// \value the value to display
     public void putDashboard(String name, DisplayType dtype, int value) {
         if (shouldDisplay(dtype))
             SmartDashboard.putNumber(name, value) ;
     }
 
+    /// \brief put a value on the driver station dashboard
+    /// \param name name of the value to display
+    /// \param dtype indicates when the value should be displayed
+    /// \value the value to display    
     public void putDashboard(String name, DisplayType dtype, String value) {
         if (shouldDisplay(dtype))
             SmartDashboard.putString(name, value) ;        
+    }
+
+    
+    public boolean isBusy() {
+        return action_ != null && !action_.isDone() && action_ != default_action_ ;
+    }
+
+    public boolean isBusyOrParentBusy() {
+        return isBusy() || parent_.isBusy() ;
+    }
+
+    public boolean isAnyParentBusy() {
+        return isBusy() || (parent_ != null && parent_.isAnyParentBusy()) ;
+    }
+
+    public boolean isBusyOrChildBusy() {
+        if (isBusy())
+            return true ;
+
+        for(Subsystem child : children_)
+        {
+            if (child.isBusyOrChildBusy())
+                return true ;
+        }
+
+        return false ;
+    }
+
+    public int initPlot(String name) {
+        return getRobot().getPlotManager().initPlot(name) ;
+    }
+
+    public void startPlot(int id, String[] cols) {
+        getRobot().getPlotManager().startPlot(id, cols) ;
+    }
+
+    public void addPlotData(int id, Double[] data) {
+        getRobot().getPlotManager().addPlotData(id, data) ;
+    }
+
+    public void endPlot(int id) {
+        getRobot().getPlotManager().endPlot(id) ;
+    }
+
+    /// \brief set the robot object for the subsystem.
+    /// \param robot the robot object for the main robot class
+    protected void setRobot(XeroRobot robot) {
+        robot_ = robot ;
+    }
+
+    /// \brief stub version of the computeMyState method.
+    /// Should be implemented by a derived class
+    protected void computeMyState() throws Exception {        
     }
 
     private boolean shouldDisplay(DisplayType dtype) {
@@ -390,54 +619,6 @@ public class Subsystem {
         }
     }
 
-    public boolean isBusy() {
-        return action_ != null && !action_.isDone() && action_ != default_action_ ;
-    }
-
-    public boolean isBusyOrParentBusy() {
-        return isBusy() || parent_.isBusy() ;
-    }
-
-    public boolean isAnyParentBusy() {
-        return isBusy() || (parent_ != null && parent_.isAnyParentBusy()) ;
-    }
-
-    public boolean isBusyOrChildBusy() {
-        if (isBusy())
-            return true ;
-
-        for(Subsystem child : children_)
-        {
-            if (child.isBusyOrChildBusy())
-                return true ;
-        }
-
-        return false ;
-    }
-
-    public int initPlot(String name) {
-        return getRobot().getPlotManager().initPlot(name) ;
-    }
-
-    public void startPlot(int id, String[] cols) {
-        getRobot().getPlotManager().startPlot(id, cols) ;
-    }
-
-    public void addPlotData(int id, Double[] data) {
-        getRobot().getPlotManager().addPlotData(id, data) ;
-    }
-
-    public void endPlot(int id) {
-        getRobot().getPlotManager().endPlot(id) ;
-    }
-
-    protected void setRobot(XeroRobot robot) {
-        robot_ = robot ;
-    }
-
-    protected void computeMyState() throws Exception {        
-    }
-
     private void cancelActionPlusChildren() {
         if (action_ != null && !action_.isDone())
             cancelAction(false);
@@ -446,18 +627,4 @@ public class Subsystem {
             child.cancelActionPlusChildren();
     }
 
-    private Action action_;
-    private Action default_action_;
-    private final Subsystem parent_;
-    private final String name_;
-    private final List<Subsystem> children_;
-    private XeroRobot robot_;
-    private final int logger_id_ ;
-    private boolean finished_default_ ;
-    private double total_time_ ;
-    private int total_cnt_ ;
-    private double max_time_ ;
-    private double min_time_ ;
-    private DecimalFormat fmt_ ;
-    private boolean verbose_ ;
 }
