@@ -7,13 +7,60 @@ import java.util.List;
 import java.text.DecimalFormat;
 import java.util.ArrayList ;
 
+/// \file
+
+/// \brief This class acts a a clearing house for messages to be routed from the robot to a person.
+///
+/// All subsystem and many of the other complex code modules produce debug messages.  These debug messages
+/// are routed through this class and filtered so only messages of interest are seen.  Subsystems or modules
+/// register their name with the MessageLogger with registerSubsystem() and a message source handle is returned.
+/// When a message is started, a message source handle is provided as well as a message type.  Message types can
+/// are specified with the MessageType enum and can be Debug, Info, Warning, Error, and Fatal.  Messages are started,
+/// data of various types (include text string) are added to the message and the message is ended.  When the message
+/// is ended, the various filters are examined to determine if the message should be sent to the user.  If the answer
+/// is yes, the then message is forwareded to any number of MessageDestination derived classes that forward messages
+/// to the user.  There are MessageDestination classes that forward messages to standard output, the driver station
+/// console, and to a file located on a USB thumb drive on the robo rio.  Any optional time source can be registered
+/// with the message logger.  If a time source is registered, each message is tagged with the current time stamp.  
+/// The MessageLogger is thread safe and can be used with multiple threads concurrently.
 public final class MessageLogger
 {
+    // The per thread data for the logger
+    private Map<Long, ThreadData> per_thread_data_ ;
+
+    // The set of destinations for messages
+    private List<MessageDestination> destinations_ ;
+
+    // The set of message types enabled
+    private List<MessageType> enabled_types_ ;
+
+    // The time source for messages
+    private MessageTimeSource time_src_ ;
+
+    // This is a mapping from subsystem number to subsystem name
+    private Map<Integer, String> subsystems_ ;
+
+    // The list of enabled subsytems
+    private List<Integer> enabled_subsystems_ ;
+
+    // This is the number for the next subsystem registered
+    private int subsystem_index_ ;
+
+    // The lock for the serial number
+    private Object lock_ ;
+
+    // the list of subsystem to be enabled if ethey are created
+    private List<String> to_be_enabled_ ;
+
+    // the format for the time value
+    private DecimalFormat format_ ;
+
+    // Serial number for each message
+    static int global_serial_ = 1 ;
+
     public static final int NOSUBSYSTEM = 0 ;
 
-    /**
-     * Create a new message logger object
-     */
+    /// \brief Create a new message logger object
     public MessageLogger()
     {
         subsystems_ = new HashMap<Integer, String>() ;
@@ -37,11 +84,9 @@ public final class MessageLogger
         format_ = new DecimalFormat("000.0000") ;
     }
 
-    /**
-     * Register a new subsystem with the message logger
-     * @param name the name of the subsystem
-     * @return the integer handle for message assocaited with the subsystem
-     */
+    /// \brief register a new subsystem with the message logger
+    /// \param name the name of the subsystem
+    /// \returns the message ID handle for messages
     public int registerSubsystem(final String name) {
         final int index = subsystem_index_++;
         subsystems_.put(index, name);
@@ -53,76 +98,68 @@ public final class MessageLogger
         return index;
     }
 
-    /**
-     * Register a time source for the message logger
-     * 
-     * @param src the time source for the message logger
-     */
+    /// \brief register a time source to return time to the message logger
+    /// \param src an object that can provide time, must be derived from the MessageTimeSource class
     public void setTimeSource(final MessageTimeSource src) {
         time_src_ = src;
     }
 
-    /**
-     * Clear all message destinations for messages
-     */
+    /// \brief clear all message destinations
     public void clear() {
         destinations_.clear();
     }
 
-    /**
-     * Adds a new message destination to the message logger
-     */
+    /// \brief add a new message destination
+    /// \param d the new message destination
     public void addDestination(final MessageDestination d) {
         destinations_.add(d);
     }
 
-    /**
-     * Enable the message type given in the message logger
-     * 
-     * @param mt the message type to enable
-     */
+    /// \brief enable a given message type
+    /// \param mt the message type to enable
     public void enableMessageType(final MessageType mt) {
         if (!enabled_types_.contains(mt))
             enabled_types_.add(mt);
     }
 
-    /**
-     * Disable the message type given in the message logger
-     * 
-     * @param mt the message type to disable
-     */
+    /// \brief disable a given message type
+    /// \param mt the message type to disable
     public void disableMessageType(final MessageType mt) {
         if (enabled_types_.contains(mt))
             enabled_types_.remove(mt);
     }
 
-    /**
-     * Returns true if the message type given is enabled
-     * 
-     * @param mt the message type to check
-     * @return true if the message type is enabled
-     */
+    /// \brief returns true if a given message type is enabled
+    /// \returns true if a given message type is enabled
     public boolean isTypeEnabled(final MessageType mt) {
         return enabled_types_.contains(mt);
     }
 
-    /**
-     * Enable a given subsystem
-     * 
-     * @param handle the handle to the subsystem to disable
-     */
+    /// \brief enable the messages associated with a given subsystem message hangle
+    /// \param handle the handle for a given subsystem
     private void enableLoggerID(final int handle) {
         if (!enabled_subsystems_.contains(handle))
             enabled_subsystems_.add(handle);
     }
 
-    /**
-     * Enable a given subsystem
-     * 
-     * @param name the name of the subsystem to enable
-     * @return true if the subsystem was valid, otherwise false
-     */
-    public boolean enableLogging(final String name) {
+    /// \brief disable messages given a logger id
+    /// \param handle the handle for a given subsystem
+    public void disableLoggerID(final int handle) {
+        if (enabled_subsystems_.contains(handle))
+            enabled_subsystems_.remove(handle);
+    }
+
+    /// \brief returns true if the given logger ID is enabled
+    /// \param handle the handle to check to see if its enabled
+    /// \returns true if the given logger ID is enabled
+    public boolean isLoggerIDEnabled(final int handle) {
+        return enabled_subsystems_.contains(handle);
+    }
+
+    /// \brief enable messages for a given subsystem
+    /// \param the name of the subsystem to enable
+    /// \returns true if the messages are enabled sucessfully
+    public boolean enableSubsystem(final String name) {
         boolean ret = true;
 
         for (final Integer key : subsystems_.keySet()) {
@@ -140,29 +177,16 @@ public final class MessageLogger
         return ret;
     }
 
-    /**
-     * Disable a given subsystem
-     * 
-     * @param handle the handle to the subsystem to disable
-     */
-    public void disableSubsystem(final int handle) {
-        if (enabled_subsystems_.contains(handle))
-            enabled_subsystems_.remove(handle);
-    }
-
-    /**
-     * Disable a given subsystem
-     * 
-     * @param name the name of the subsystem to enable
-     * @return true if the subsystem was valid, otherwise false
-     */
+    /// \brief disable messages for a given subsystem
+    /// \param the name of the subsystem to disable
+    /// \returns true if the messages are disabled sucessfully
     public boolean disableSubsystem(final String name) {
         boolean ret = false;
 
         for (final Integer key : subsystems_.keySet()) {
             final String subname = subsystems_.get(key);
             if (subname == name) {
-                disableSubsystem(key);
+                disableLoggerID(key);
                 ret = true;
                 break;
             }
@@ -171,30 +195,16 @@ public final class MessageLogger
         return ret;
     }
 
-    /**
-     * Returns true if the subsystem with the given handle is enabled in the mssage
-     * logger
-     * 
-     * @param handle the handle to the subsystem in question
-     * @return true if the subsystem is enabled
-     */
-    public boolean isSubsystemEnabled(final int handle) {
-        return enabled_subsystems_.contains(handle);
-    }
-
-    /**
-     * Returns true if the subsystem with the given name is enabled
-     * 
-     * @param name the name of the subsystem to check
-     * @return true if message for the subsystem are enabled
-     */
+    /// \brief returns true if the subsystem given is enabled
+    /// \param name the name of the subsystem to check for enabled
+    /// \returns true if the subsystem given is enabled
     public boolean isSubsystemEnabled(final String name) {
         boolean ret = false;
 
         for (final Integer key : subsystems_.keySet()) {
             final String subname = subsystems_.get(key);
             if (subname == name) {
-                ret = isSubsystemEnabled(key);
+                ret = isLoggerIDEnabled(key);
                 break;
             }
         }
@@ -202,13 +212,10 @@ public final class MessageLogger
         return ret;
     }
 
-    /**
-     * start a new message.
-     * 
-     * @param mtype     the type of message
-     * @param subsystem the subsystem for the message
-     * @return the message logger object
-     */
+    /// \brief start a new message
+    /// \param mtype the type of message to start
+    /// \param subsystem the module or subsystem that is displaying the message
+    /// \returns a reference to the message logger object
     public MessageLogger startMessage(final MessageType mtype, final int subsystem) {
         final ThreadData per = getPerThreadData();
 
@@ -232,59 +239,54 @@ public final class MessageLogger
         return this;
     }
 
-    static private /* synchronized */ int getSerial() {
-        return global_serial_++ ;
-    }
-
-    /**
-     * start a message with no subsystem
-     * 
-     * @param mtype the message type for the message
-     * @return the message logger
-     */
+    /// \brief start a new message with no subsystem
+    /// \param mtype the type of message to start
+    /// \returns a reference to the message logger object
     public MessageLogger startMessage(final MessageType mtype) {
         return startMessage(mtype, NOSUBSYSTEM);
     }
 
-    /**
-     * end a message and print if enabled
-     */
+    /// \brief ends the current message
+    /// This method ends the current message and displays the message if the filter tests
+    /// allow the message to be displayed.  The message is displayed by passing to each of
+    /// the MessageDestination objects registered.
     public void endMessage() {
         final ThreadData per = getPerThreadData();
 
         if (!per.in_message_)
             return;
 
-        // synchronized(lock_) {
-            if (per.message_.length() > 0) {
-                if (enabled_types_.contains(per.type_) && subsystemEnabled(per.subsystem_)) {
-                    String msgstr;
-                    if (time_src_ == null) {
-                        msgstr = "???.????";
-                    } else {
-                        msgstr = format_.format(time_src_.getTime()) ;
-                    }
+        if (per.message_.length() > 0) {
+            if (enabled_types_.contains(per.type_) && subsystemEnabled(per.subsystem_)) {
+                String msgstr;
+                if (time_src_ == null) {
+                    msgstr = "???.????";
+                } else {
+                    msgstr = format_.format(time_src_.getTime()) ;
+                }
 
-                    msgstr += ": " + per.type_.toString() + ": " + per.message_;
-                    for (final MessageDestination dest : destinations_) {
-                        dest.displayMessage(per.type_, per.subsystem_, msgstr);
-                    }
+                msgstr += ": " + per.type_.toString() + ": " + per.message_;
+                for (final MessageDestination dest : destinations_) {
+                    dest.displayMessage(per.type_, per.subsystem_, msgstr);
                 }
             }
+        }
 
-            if (per.type_ == MessageType.Fatal) {
-                for (final MessageDestination dest : destinations_) {                
-                    dest.displayMessage(per.type_, per.subsystem_, "fatal error occurred - code aborting") ;
-                }
-                System.exit(-2);
+        if (per.type_ == MessageType.Fatal) {
+            for (final MessageDestination dest : destinations_) {                
+                dest.displayMessage(per.type_, per.subsystem_, "fatal error occurred - code aborting") ;
             }
-        //}
+            System.exit(-2);
+        }
 
         per.message_ = null ;
         per.subsystem_ = 0;
         per.in_message_ = false;
     }
 
+    /// \brief add a string to the current message
+    /// \param str the string to add
+    /// \returns the MessageLogger object
     public MessageLogger add(final String str) {
         final ThreadData per = getPerThreadData();
         if (per.enabled_ && per.in_message_)
@@ -292,6 +294,10 @@ public final class MessageLogger
         return this;
     }
 
+    /// \brief add a name value pair to the message
+    /// \param name the name to add
+    /// \param value the value to add
+    /// \returns the MessageLogger object
     public MessageLogger add(final String name, final double value) {
         final ThreadData per = getPerThreadData();
         if (per.enabled_&& per.in_message_) {
@@ -304,6 +310,10 @@ public final class MessageLogger
         return this;        
     }
 
+    /// \brief add a name value pair to the message
+    /// \param name the name to add
+    /// \param value the value to add
+    /// \returns the MessageLogger object
     public MessageLogger add(final String name, final int value) {
         final ThreadData per = getPerThreadData();
         if (per.enabled_&& per.in_message_) {
@@ -316,6 +326,10 @@ public final class MessageLogger
         return this;        
     }  
     
+    /// \brief add a name value pair to the message
+    /// \param name the name to add
+    /// \param value the value to add
+    /// \returns the MessageLogger object    
     public MessageLogger add(final String name, final boolean value) {
         final ThreadData per = getPerThreadData();
         if (per.enabled_&& per.in_message_) {
@@ -328,6 +342,10 @@ public final class MessageLogger
         return this;        
     }  
     
+    /// \brief add a name value pair to the message
+    /// \param name the name to add
+    /// \param value the value to add
+    /// \returns the MessageLogger object    
     public MessageLogger add(final String name, final String value) {
         final ThreadData per = getPerThreadData();
         if (per.enabled_&& per.in_message_) {
@@ -340,6 +358,9 @@ public final class MessageLogger
         return this;        
     }       
 
+    /// \brief add a quoted string to a messages
+    /// \param str the string to add
+    /// \returns the MessageLogger object  
     public MessageLogger addQuoted(final String str) {
         final ThreadData per = getPerThreadData();
         if (per.enabled_&& per.in_message_)
@@ -352,6 +373,9 @@ public final class MessageLogger
         return this;
     }    
 
+    /// \brief add a character to a messages
+    /// \param str the character to add
+    /// \returns the MessageLogger object  
     public MessageLogger add(final char ch) {
         final ThreadData per = getPerThreadData();
         if (per.enabled_&& per.in_message_)
@@ -360,6 +384,9 @@ public final class MessageLogger
         return this;        
     }
 
+    /// \brief add a integer to a messages
+    /// \param str the integer to add
+    /// \returns the MessageLogger object     
     public MessageLogger add(final int value) {
         final ThreadData per = getPerThreadData();
         if (per.enabled_&& per.in_message_)
@@ -368,6 +395,9 @@ public final class MessageLogger
         return this;
     }
 
+    /// \brief add a value to a messages
+    /// \param str the value to add
+    /// \returns the MessageLogger object     
     public MessageLogger add(final long value) {
         final ThreadData per = getPerThreadData();
         if (per.enabled_&& per.in_message_)
@@ -376,6 +406,9 @@ public final class MessageLogger
         return this;
     }
 
+    /// \brief add a value to a messages
+    /// \param str the value to add
+    /// \returns the MessageLogger object     
     public MessageLogger add(final boolean value) {
         final ThreadData per = getPerThreadData();
         if (per.enabled_&& per.in_message_)
@@ -384,6 +417,9 @@ public final class MessageLogger
         return this;
     }
 
+    /// \brief add a value to a messages
+    /// \param str the value to add
+    /// \returns the MessageLogger object     
     public MessageLogger add(final double value) {
         final ThreadData per = getPerThreadData();
         if (per.enabled_&& per.in_message_)
@@ -392,12 +428,19 @@ public final class MessageLogger
         return this;
     }
 
+    /// \brief add a value to a messages
+    /// \param str the value to add
+    /// \returns the MessageLogger object     
     public MessageLogger add(final float value) {
         final ThreadData per = getPerThreadData();
         if (per.enabled_&& per.in_message_)
             per.message_.append(value) ;
 
         return this;
+    }
+
+    static private /* synchronized */ int getSerial() {
+        return global_serial_++ ;
     }
 
     private boolean subsystemEnabled(final int sub) {
@@ -434,36 +477,4 @@ public final class MessageLogger
         public int serial_ ;
     } ;
 
-    // The per thread data for 
-    private Map<Long, ThreadData> per_thread_data_ ;
-
-    // The set of destinations for messages
-    private List<MessageDestination> destinations_ ;
-
-    // The set of message types enabled
-    private List<MessageType> enabled_types_ ;
-
-    // The time source for messages
-    private MessageTimeSource time_src_ ;
-
-    // This is a mapping from subsystem number to subsystem name
-    private Map<Integer, String> subsystems_ ;
-
-    // The list of enabled subsytems
-    private List<Integer> enabled_subsystems_ ;
-
-    // This is the number for the next subsystem registered
-    private int subsystem_index_ ;
-
-    // The lock for the serial number
-    private Object lock_ ;
-
-    // the list of subsystem to be enabled if ethey are created
-    private List<String> to_be_enabled_ ;
-
-    // the format for the time value
-    private DecimalFormat format_ ;
-
-    // Serial number for each message
-    static int global_serial_ = 1 ;
 }

@@ -13,19 +13,23 @@ import org.xero1425.misc.SettingsValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/// \brief the base class for all subsystems that make up the robot.
+/// \file
+
+/// \brief The base class for all subsystems that make up the robot.
 /// The subsystem class manages the interaction of subsytems with the robot control loop for each
 /// subsystem.  A subsystem goes through a specific lifecycle.
-/// <table>
-/// <caption id="multi_row">Subsystemn lifecycle</caption>
-/// <tr><th>State<th>Purpose        <th>Column 3
-/// <tr><td rowspan="2">cell row=1+2,col=1<td>cell row=1,col=2<td>cell row=1,col=3
-/// <tr><td rowspan="2">cell row=2+3,col=2                    <td>cell row=2,col=3
-/// <tr><td>cell row=3,col=1                                  <td rowspan="2">cell row=3+4,col=3
-/// <tr><td colspan="2">cell row=4,col=1+2
-/// <tr><td>cell row=5,col=1              <td colspan="2">cell row=5,col=2+3
-/// <tr><td colspan="2" rowspan="2">cell row=6+7,col=1+2      <td>cell row=6,col=3
-/// </table>
+/// \li \c construction - the constructor is called to create the subsystem
+/// \li \c computeMyState() - this is called to compute the initial state of the subsystem
+/// \li \c postHWInit() - called once to do any initialization where state needs to be known
+/// \li \c reset() - called during initialization as the robot enters the disabled state
+/// \li \c init() - called to initialize hardware for the start of auto
+/// \li \c computeMyState() - called during the robot loop once per loop during auto
+/// \li \c run() - called during the robot loop once per loop during auto
+/// \li \c reset() - called after auto as the robot enters the disabled state between auto and teleop
+/// \li \c init() - called to initialize hardware for the start of teleop
+/// \li \c computeMyState() - called during the robot loop once per loop during teleop
+/// \li \c run() - called during the robot loop once per loop during teleop
+/// \li \c reset() - called after teleop as the robot enters the disabled state
 ///
 public class Subsystem {
     //
@@ -259,6 +263,11 @@ public class Subsystem {
     /// the exception from propogating up and crashing the robot code.
     ///
     public void computeState() {
+        
+        for(Subsystem sub : children_) {
+            sub.computeState();
+        }
+
         try {
             double start = getRobot().getTime() ;
             computeMyState() ;
@@ -286,10 +295,6 @@ public class Subsystem {
             logger.add("subsystem ").addQuoted(getName()) ;
             logger.add(" threw exception in computeMyState() - ").add(ex.getMessage()) ;
             logger.endMessage();
-        }
-
-        for(Subsystem sub : children_) {
-            sub.computeState();
         }
     }
 
@@ -512,19 +517,20 @@ public class Subsystem {
             SmartDashboard.putString(name, value) ;        
     }
 
-    
+    /// \brief returns true if the subsystem is busy running and action and the action is not the default action
+    /// \returns true if the subsystem is busy running an asction.    
     public boolean isBusy() {
         return action_ != null && !action_.isDone() && action_ != default_action_ ;
     }
 
-    public boolean isBusyOrParentBusy() {
-        return isBusy() || parent_.isBusy() ;
-    }
-
+    /// \brief returns true if the subsystem or any of its parents are busy
+    /// returns true if the subsystem or any of its parents are busy
     public boolean isAnyParentBusy() {
         return isBusy() || (parent_ != null && parent_.isAnyParentBusy()) ;
     }
 
+    /// \brief returns true if the subsystem or any of its children are busy
+    /// \returns true if the subsystem or any of its children are busy
     public boolean isBusyOrChildBusy() {
         if (isBusy())
             return true ;
@@ -538,18 +544,31 @@ public class Subsystem {
         return false ;
     }
 
+    /// \brief initialize a plot with the name given.
+    /// The name must be unique across all plots created.
+    /// \param name the name of the plot
+    /// \returns a handle to the plot to be used in any subsequent plot related calls.
     public int initPlot(String name) {
         return getRobot().getPlotManager().initPlot(name) ;
     }
 
+    /// \brief start a plot with the data columns given
+    /// \param id the handle for a plot returned by initPlot().
+    /// \param cols an array of data columns to be plotted
     public void startPlot(int id, String[] cols) {
         getRobot().getPlotManager().startPlot(id, cols) ;
     }
 
+    /// \brief add data to a plot
+    /// \param id the handle for a plot returned by initPlot()
+    /// \param data the data for the plot, should be the same size as the cols array in startPlot()
     public void addPlotData(int id, Double[] data) {
         getRobot().getPlotManager().addPlotData(id, data) ;
     }
 
+    /// \brief end a plot
+    /// This signals to any software listening to plots that this plot is complete and all data is present
+    /// \param id the handle for a plot returned by initPlot()
     public void endPlot(int id) {
         getRobot().getPlotManager().endPlot(id) ;
     }

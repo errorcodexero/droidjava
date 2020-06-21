@@ -6,14 +6,54 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.HashMap ;
 
+/// \file
+
+/// \brief This class reads setting from a settings file.
+/// The application can then query the settings via their names.
 public final class SettingsParser
 {
-    static public final String LoggerName = "settings" ;
+    //
+    // The message logger for logging messages
+    //   
+    private final MessageLogger logger_;
 
+    //
+    // The ID to use for SettingsParser meessages
+    //
+    private final int logger_id_;
+
+    //
+    // The list of defines set that should be honored while reading the
+    // settings file.
+    //
+    private final List<String> defines_;
+
+    //
+    // The settings read from the settings file
+    //
+    private final Map<String, SettingsValue> values_;
+
+    //
+    // If true, we are skipping settings from the settings file due to a defined
+    //
+    private boolean skipping_ ;
+
+    //
+    // If skipping the level of if statements we have seen.  We must see a matching
+    // number of endif statements to be through skipping.
+    //
+    private int skipping_level_ ;
+
+    //
+    // The name of the message for the log file
+    //
+    static private final String LoggerName = "settings" ;
+
+    /// \brief create a new settings parser
+    /// \param logger the message logger
     public SettingsParser(final MessageLogger logger) {
         logger_ = logger;
         logger_id_ = logger_.registerSubsystem(LoggerName);
@@ -22,6 +62,7 @@ public final class SettingsParser
         skipping_ = false ;
     }
 
+    /// \brief print all of the keys read and their values to the message logger
     public void dumpKeys() {
         logger_.startMessage(MessageType.Info) ;
         logger_.add("Settings Parser Keys\n") ;
@@ -33,29 +74,42 @@ public final class SettingsParser
         logger_.endMessage();
     }
 
+    /// \brief return the message logger ID to use for SettingsParser messages
+    /// \returns the message logger ID to use for SettingsParser messages    
     public int getLoggerID() {
         return logger_id_ ;
     }
 
+    /// \brief add a define to be honored while reading the settings file
+    /// \param def the define to be added to the define list
     public void addDefine(final String def) {
         if (!defines_.contains(def))
             defines_.add(def);
     }
 
+    /// \brief return the list of defines in the defines list
+    /// \returns the list of defines in the defines list
     public List<String> getDefines() {
         return defines_;
     }
 
+    /// \brief returns true if a given define is in the defines list
+    /// \param def the define to check for
+    /// \returns true if a given define is in the defines list    
     public boolean isDefined(final String def) {
         return values_.containsKey(def);
     }
 
+    /// \brief read a settings file
+    /// If there is a failure while reading the settings file, there will be no settings stored in the file.
+    /// \param filename the name of the file to read
+    /// \returns true if the file was read sucessfully, otherwise false
     public boolean readFile(final String filename) {
         FileReader rdr ;
         boolean ret = true ;
 
-        logger_.startMessage(MessageType.Debug, logger_id_).add("reading file '").add(filename).add("'")
-                .endMessage();
+        logger_.startMessage(MessageType.Debug, logger_id_).add("reading file '")
+                .add(filename).add("'").endMessage();
 
         try {
             rdr = new FileReader(filename);
@@ -103,9 +157,15 @@ public final class SettingsParser
             logger_.add("' - ").add(ex.getMessage()).endMessage();
             ret = false ;            
         }
+
+        if (ret == false)
+            values_.clear() ;
         return ret ;
     }
 
+    /// \brief return a settings value given its name.
+    /// \exception throws a MissingParameterException if a settings with the given name is not found
+    /// \returns the SettingsValue for the name given
     public SettingsValue get(final String name) throws MissingParameterException {
         SettingsValue v = values_.get(name) ;
         if (v == null)
@@ -114,6 +174,8 @@ public final class SettingsParser
         return v ;
     }
 
+    /// \brief returns a settings value given its name, or returns null if it does not exist
+    /// \returns a settings value given its name
     public SettingsValue getOrNull(final String name) {
         return values_.get(name) ;
     }    
@@ -312,14 +374,5 @@ public final class SettingsParser
         return true ;
     }
 
-    public Set<String> getKeys() {
-        return values_.keySet() ;
-    }
 
-    private final MessageLogger logger_;
-    private final int logger_id_;
-    private final List<String> defines_;
-    private final Map<String, SettingsValue> values_;
-    private boolean skipping_ ;
-    private int skipping_level_ ;
 }
