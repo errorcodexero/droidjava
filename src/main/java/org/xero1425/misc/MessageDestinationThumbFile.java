@@ -4,8 +4,29 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Date;
 
-public class MessageDestinationThumbFile extends MessageDestination
+/// \file
+
+/// \brief This class is a MessageDestination that logs messages to a thumb drive on the roborio
+public class MessageDestinationThumbFile implements MessageDestination
 {
+    //
+    // THe name of the file
+    //
+    private String filename_;
+
+    //
+    // The file writer for writing information to the file
+    //
+    private FileWriter file_ ;
+
+    //
+    // If true, the file writer is valid
+    //
+    private boolean valid_;
+
+    /// \brief create a new object that logs messages to a thumb drive
+    /// \param bdir the base directory for log files (e.g. /u) ;
+    /// \param a timeout for trying to open a file in the base directory given
     public MessageDestinationThumbFile(final String bdir, final long timeout) {
         int index = 1;
         valid_ = false;
@@ -39,6 +60,10 @@ public class MessageDestinationThumbFile extends MessageDestination
         }
     }
 
+    /// \brief display a message by appending it to a file on the thumb drive
+    /// \param type the message type
+    /// \param subsystem the subsystem ID for the message
+    /// \param msg the text of the message
     public void displayMessage(final MessageType type, final int subsystem, final String msg) {
         if (valid_) {
             try
@@ -54,7 +79,4 @@ public class MessageDestinationThumbFile extends MessageDestination
         }
     }
 
-    private String filename_;
-    private FileWriter file_ ;
-    private boolean valid_;
 }

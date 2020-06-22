@@ -1,18 +1,96 @@
 package org.xero1425.misc ;
 
+/// \file
+
+/// \brief this class is a solver for the trapezoidal speed profile required to travel a distance
 public class TrapezoidalProfile {
+    //
+    // The maximum acceleration
+    //
+    private double maxa_ ;
+
+    //
+    // The maximum deceleration
+    //
+    private double maxd_ ;
+
+    //
+    // The maximum velocity
+    //
+    private double maxv_ ;
+
+    //
+    // The time spend accelerating
+    //
+    private double ta_ ;
+
+    //
+    // The time spend cruising at maxv
+    //
+    private double tc_ ;
+
+    //
+    // The time spend decelerating
+    //
+    private double td_ ;
+
+    //
+    // The start velocity for the profile
+    //
+    private double start_velocity_ ;
+
+    //
+    // The end velocity for the profile
+    //
+    private double end_velocity_ ;
+
+    //
+    // The distance covered by the profile
+    //
+    private double distance_ ;
+
+    //
+    // If true, the final output should be negative
+    //
+    private boolean isneg_ ;
+
+    //
+    // The actual max velocity
+    //
+    private double actual_max_velocity_ ;
+
+    //
+    // The type of the actual profile (trapezoid, v, or line)
+    //
+    private String type_ ;
+
+    /// \brief create the object given the performance characteristics of the movement
+    /// \param accel the maximum acceleration
+    /// \param decel the maximum deceleration
+    /// \param maxv the maximum velocity
     public TrapezoidalProfile(double accel, double decel, double maxv) {
         maxa_ = accel ;
         maxd_ = decel ;
         maxv_ = maxv ;
     }
 
+    /// \brief create the object reading the performance characteristics from the settings file
+    /// The max acceleration is found by appending ":maxa" to the basename.  The maximum deceleration
+    /// is found by appending ":maxd" to the basename.  The maximum velocity is found by appending
+    /// ":maxv" to the basename.
+    /// \param settings the settings file parser
+    /// \param name the basename used to look up parameters.
     public TrapezoidalProfile(SettingsParser settings, String name) throws BadParameterTypeException, MissingParameterException {
         maxa_ = settings.get(name + ":maxa").getDouble() ;
         maxd_ = settings.get(name + ":maxd").getDouble() ;
         maxv_ = settings.get(name + ":maxv").getDouble() ;
     }
 
+    /// \brief create a speed profile that covers the distance given, with the start and end velocities as conditions
+    /// The acceleration time (if any), cruise time (if any), and deceleration time (if any) are all stored internally.
+    /// \param dist the distance the speed profile should cover
+    /// \param start_velocity the start velocity of the object
+    /// \param end_velocity the end velocity of the object
     public void update(double dist, double start_velocity, double end_velocity) {
         start_velocity_ = Math.abs(start_velocity) ;
         end_velocity_ = Math.abs(end_velocity) ;
@@ -71,6 +149,9 @@ public class TrapezoidalProfile {
         }
     }
 
+    /// \brief return the planned acceleration for the time given relative to the time when update() was called
+    /// \param t the time of interest
+    /// \returns the acceleration for the time of interest
     public double getAccel(double t) {
         double ret ;
 
@@ -88,6 +169,9 @@ public class TrapezoidalProfile {
         return isneg_ ? -ret : ret ;
     }
 
+    /// \brief return the planned velocity for the time given relative to the time when update() was called
+    /// \param t the time of interest
+    /// \returns the velocity for the time of interest
     public double getVelocity(double t) {
         
         double ret ;
@@ -111,6 +195,9 @@ public class TrapezoidalProfile {
         return isneg_ ? -ret : ret ;
     }
 
+    /// \brief return the planned distance for the time given relative to the time when update() was called
+    /// \param t the time of interest
+    /// \returns the distance for the time of interest
     public double getDistance(double t) {
         double ret ;
 
@@ -137,6 +224,8 @@ public class TrapezoidalProfile {
         return isneg_ ? -ret : ret ;
     }
 
+    /// \brief return a human readable string describing the speed profile
+    /// \returns a human readable string describing the speed profile
     public String toString() {
         String ret = "[" + type_ ;
         ret += ", sv " + Double.toString(start_velocity_) ;
@@ -150,22 +239,35 @@ public class TrapezoidalProfile {
         return ret ;
     }
 
+    /// \brief return the time spent acceleration
+    /// \returns the time spent acceleration
     public double getTimeAccel() {
         return ta_ ;
     }
 
+    /// \brief return the time spent cruising
+    /// \returns the time spent cruising
     public double getTimeCruise() {
         return tc_ ;
     }
 
+    /// \brief return the time spent deceleration
+    /// \returns the time spent deceleration
     public double getTimeDecel() {
         return td_ ;
     }
 
+    /// \brief return the total time for the profile
+    /// \returns the total time for the profile
     public double getTotalTime() {
         return ta_ + tc_ + td_ ;
     }
 
+    /// \brief return the maximum velocity in the profile
+    /// This might just be maxv provided in the update() call if there is time for the profile to
+    /// reach this velocity.  However, if the profile is a "V" shape instead of a trapezoidal shape
+    /// then this maximum velocity may be less than maxv.
+    /// \returns the maximum velocity in the profile
     public double getActualMaxVelocity() {
         if (isneg_)
             return -actual_max_velocity_ ;
@@ -173,6 +275,8 @@ public class TrapezoidalProfile {
         return actual_max_velocity_ ;
     }
 
+    /// \brief given a distance, return the when that distance will be hit
+    /// \returns the time when a specific distance will be hit.
     public double getTimeForDistance(double dist) throws Exception {
         double ret ;
         double sign = isneg_ ? -1.0 : 1.0 ;
@@ -201,10 +305,14 @@ public class TrapezoidalProfile {
         return ret ;
     }
 
+    /// \brief return the start velocity for the speed profile
+    /// \returns the start velocity for the speed profile    
     public double getStartVelocity() {
         return start_velocity_ ;
     }
 
+    /// \brief return the end velocity for the speed profile
+    /// \returns the end velocity for the speed profile     
     public double getEndVelocity() {
         return end_velocity_ ;
     }
@@ -240,20 +348,4 @@ public class TrapezoidalProfile {
         return ret ;
     }
 
-    private double maxa_ ;
-    private double maxd_ ;
-    private double maxv_ ;
-
-    private double ta_ ;
-    private double tc_ ;
-    private double td_ ;
-
-    private double start_velocity_ ;
-    private double end_velocity_ ;
-    private double distance_ ;
-
-    private boolean isneg_ ;
-    private double actual_max_velocity_ ;
-
-    private String type_ ;
 }

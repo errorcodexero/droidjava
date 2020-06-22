@@ -1,7 +1,12 @@
 
 package org.xero1425.misc ;
 
-public abstract class MessageTimeSource 
+/// \file
+
+/// \brief this interface defines the requirements of a time source for the MessageLogger
+public interface MessageTimeSource 
 {
-    public abstract double getTime() ;
+    /// \brief return the time in seconds since the start of the robot code
+    /// \returns the time in seconds since the start of robot code
+    public double getTime() ;
 } ;

@@ -3,8 +3,17 @@ package org.xero1425.misc;
 import java.io.File;
 import java.io.FileWriter;
 
-public class MessageDestinationFile extends MessageDestination
+/// \file
+
+/// \brief a message destination that stores the logged messages in a file
+public class MessageDestinationFile implements MessageDestination
 {
+    private String filename_;
+    private FileWriter file_ ;
+    private boolean valid_ ;
+
+    /// \brief create a new destination writing to the filename given
+    /// \param filename the name of the output file for messages
     public MessageDestinationFile(final String filename) {
         final File f = new File(filename);
         try {
@@ -17,6 +26,10 @@ public class MessageDestinationFile extends MessageDestination
         }
     }
 
+    /// \brief display a message by appending it to a file
+    /// \param type the message type
+    /// \param subsystem the subsystem ID for the message
+    /// \param msg the text of the message
     public void displayMessage(final MessageType type, final int subsystem, final String msg) {
         if (valid_) {
             try {
@@ -29,8 +42,4 @@ public class MessageDestinationFile extends MessageDestination
             }
         }
     }
-
-    private String filename_;
-    private FileWriter file_ ;
-    private boolean valid_ ;
 }

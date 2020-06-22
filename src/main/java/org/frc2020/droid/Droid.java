@@ -96,7 +96,7 @@ public class Droid extends XeroRobot {
         // logger.enableLogging(SettingsParser.LoggerName) ;
         // logger.enableLogging(XeroRobot.LoggerName) ;
 
-        logger.enableLogging(Action.LoggerName) ;
+        logger.enableSubsystem(Action.LoggerName) ;
 
         if (RobotBase.isSimulation()) {
             // logger.enableLogging(SimulationEngine.LoggerName) ;
