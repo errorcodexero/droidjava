@@ -10,7 +10,7 @@ public class XeroMath
 {
     /// \brief normalize an angle in degrees
     /// This method converts the input angle to an angle between -180 and +180 degrees
-    /// \param a the angine in degrees
+    /// \param a the angle in degrees
     /// \returns the input angle normalized to between -180 and +180 degrees
     public static double normalizeAngleDegrees(double a) {
         while (a <= -180.0)
@@ -22,7 +22,7 @@ public class XeroMath
         return a ;          
     }
 
-    /// \brief normalize an angle in redians
+    /// \brief normalize an angle in radians
     /// This method converts the input angle to an angle between -PI and +PI radians
     /// \param a the angle in radians
     /// \returns the input angle normalized to between -PI and +PI radians

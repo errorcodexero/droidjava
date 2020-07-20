@@ -3,7 +3,7 @@ package org.xero1425.misc ;
 /// \file
 
 /// \brief a PD controller that uses both a velocity and acceleration feed forward term.  
-/// This controller is usually used to follow a motion plan that proviides acceleration, 
+/// This controller is usually used to follow a motion plan that provides acceleration, 
 /// velocity, and position at regular time steps along a plan.  Both the path following
 /// in the tank drive for the drivebase and the TrapezoidalProfile provide outputs that
 /// are suitable as inputs to this controller.

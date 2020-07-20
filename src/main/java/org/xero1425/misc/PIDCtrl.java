@@ -1,7 +1,61 @@
 package org.xero1425.misc ;
 
+/// \file
+
+/// \brief a PD controller that takes a P, I, D and F (feed forward) term  
+/// This controller is a standard PID controller. 
+
 public class PIDCtrl
 {
+
+    //
+    //Variables!!
+    //
+
+    // P constant for P control
+    private double kp_ ;
+    
+    // I constant for I control
+    private double ki_ ;
+    
+    // D constant for D control
+    private double kd_ ;
+
+    // feed forward term
+    private double kf_ ;
+    
+    // minimum output
+    private double kmin_ ;
+
+    // minimum output
+    private double kmax_;
+
+    // maximum ki_ (integral constant) value 
+    private double kimax_;
+
+    //
+    // If true, then we're managing an angle
+    //
+    private boolean is_angle_;
+
+    //
+    // If true, it has recorded the previous error 
+    //
+    private boolean has_last_error_;
+    //
+    // The most recent error
+    //
+    private double last_error_;
+
+    //
+    // where all the integrals are summation-ed onto
+    //
+    private double integral_;
+
+
+    //
+    // assigning member variables = 0 in constructor
+    //
     public PIDCtrl(boolean isangle) {
         kp_ = 0 ;
         ki_ = 0 ;
@@ -14,6 +68,16 @@ public class PIDCtrl
         is_angle_ = isangle ;
     }
 
+    /// \brief create a new object by taking double-inputs.
+    /// Enter all the correct information for the variables
+    /// \param p the proportional constant
+    /// \param i the integral constant
+    /// \param d the derivative constant
+    /// \param f the feedforward constant
+    /// \param minout the minimum output
+    /// \param maxout the maximum output
+    /// \param maxint the maximum integral
+    /// \param angle if true it is managing an angle between =180 and +180
     public PIDCtrl(double p, double i, double d, double f, double minout, double maxout, double maxint, boolean isangle) {
         kp_ = p ;
         ki_ = i ;
@@ -26,10 +90,23 @@ public class PIDCtrl
         is_angle_ = isangle ;
     }
 
+    /// \brief create a new object by reading parameters from the settings parser.
+    /// The kv parameter is found by looking up the basename + ":kv".  The ka parameters is
+    /// found by looking up the basename + ":ka".  The kp parameter is found by looking up
+    /// the basename + ":kp".  The kd parameter is found by looking up the basename + ":kd".
+    /// \param settings the settings parser
+    /// \param name the basename to use to extract params from the settings parser
+    /// \param angle if true it is managing an angle between =180 and +180
     public PIDCtrl(SettingsParser settings, String name, boolean isangle) throws MissingParameterException, BadParameterTypeException {
         init(settings, name) ;
     }
 
+    /// \brief create a new object by reading parameters from the settings parser.
+    /// The kv parameter is found by looking up the basename + ":kv".  The ka parameters is
+    /// found by looking up the basename + ":ka".  The kp parameter is found by looking up
+    /// the basename + ":kp".  The kd parameter is found by looking up the basename + ":kd".
+    /// \param settings the settings parser
+    /// \param name the basename to use to extract params from the settings parser
     public void init(SettingsParser settings, String name)  throws MissingParameterException, BadParameterTypeException {
         kp_ = settings.get(name + ":kp").getDouble() ;
         ki_ = settings.get(name + ":ki").getDouble() ;
@@ -40,47 +117,71 @@ public class PIDCtrl
         kimax_ = settings.get(name + ":imax").getDouble() ;                                        
     }
 
+    /// \brief get the output by using variables & performing the PID calculations
+    /// \param target the target position
+    /// \param current the current position
+    /// \param dt the difference in time (delta time) since the last robot loop (should be 20 milliseconds)
+    /// \returns the output applied to motors/etc. after performing calculations
     public double getOutput(double target, double current, double dt) {
         double error = calcError(target, current) ;
         double pOut = kp_ * error;
         double derivative = 0;
 
+        // dt is difference in time (telta time)
+        // "if" statement takes into account whether 1 robot loop has passed since program started
         if (has_last_error_) {
+            // takes derivative based on definition of derivative
             derivative = (error - last_error_) / dt ;
         }
-
+        
+        // assigns last_error_ to current error
         last_error_ = error;
         has_last_error_ = true;
+
+        // output for derivative * D-constant calculated
         double dOut = kd_ * derivative;
         
+        // calculates the integral value by taking a summation of error * difference in time
         integral_ += error * dt ;
         
+        // check if integral term is too large small
         if (integral_ > kimax_)
             integral_ = kimax_ ;
-        else if (integral_ < kimax_)
+        else if (integral_ < -kimax_)
             integral_ = -kimax_ ;
         
+        // output fot integral * I-constant calculated 
         double iOut = ki_ * integral_;
-    
+        
+        // output sum of proportional, integral, and derivative calculations
+        // add the feedforward term * target
         double output = pOut + iOut + dOut + kf_ * target ;
     
+        // make sure output isn't too big or small
+        // if it is, assign it to the min/max outputs
         if (output <= kmin_)
             output = kmin_ ;
-        
         if (output >= kmax_)
             output = kmax_ ;
         
         return output;
     }
 
+    /// \brief resets "has_last_error_" to default and sets the integral summation back to 0
     public void reset() {
         has_last_error_ = false ;
         integral_ = 0.0 ;
     }
-
+    
+    /// \brief gets the error between current and target position
+    /// \param target the target position
+    /// \param current the current position
+    /// \returns the error
     private double calcError(double target, double current) {
         double error ;
         
+        // check if target is an angle, if so use a math function to get output in angle degrees between +-180
+        // else give a "normal" answer of just (target - current)
         if (is_angle_)
             error = XeroMath.normalizeAngleDegrees(target - current) ;
         else
@@ -89,18 +190,4 @@ public class PIDCtrl
         return error ;        
     }
 
-    private double kp_ ;
-    private double ki_ ;
-    private double kd_ ;
-    private double kf_ ;
-    private double kmin_ ;
-    private double kmax_;
-    private double kimax_;
-
-    private boolean is_angle_;
-
-    private boolean has_last_error_;
-    private double last_error_;
-
-    private double integral_;
 } ;

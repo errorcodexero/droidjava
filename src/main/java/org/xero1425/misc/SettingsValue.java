@@ -128,6 +128,7 @@ public class SettingsValue
     public boolean getBoolean() throws BadParameterTypeException {
         if (type_ != SettingsType.Boolean)
             throw new BadParameterTypeException(SettingsType.Boolean, type_) ;
+        
         return bvalue_ ;
     }
     
@@ -137,6 +138,7 @@ public class SettingsValue
     public String getString() throws BadParameterTypeException {
         if (type_ != SettingsType.String)
             throw new BadParameterTypeException(SettingsType.String, type_) ;
+        
         return svalue_ ;
     }    
 
@@ -167,8 +169,8 @@ public class SettingsValue
         return ret ;
     }
 
-    /// \brief returns true it two SettingsValue are the same
-    /// \returns true it two SettingsValue are the same
+    /// \brief returns true if two SettingsValue are the same
+    /// \returns true if two SettingsValue are the same
     @Override
     public boolean equals(Object obj) {
         if (obj == null)
