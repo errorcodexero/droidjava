@@ -191,6 +191,7 @@ public class SettingsValue
                 break ;
             case Double:
                 ret = (Math.abs(dvalue_ - other.dvalue_) < 1e-6) ;
+                break ;
             case String:
                 ret = svalue_.equals(other.svalue_) ;
                 break ;

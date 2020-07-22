@@ -208,7 +208,7 @@ public final class SettingsParser
         else
         {
             boolean isDouble = Pattern.matches("^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$", s);
-            boolean isInteger = Pattern.matches("^\\d*$", s) ;
+            boolean isInteger = Pattern.matches("^[-+]?\\d*$", s) ;
 
             if (isInteger) {
                 try 
