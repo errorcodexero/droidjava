@@ -17,7 +17,7 @@ public abstract class SimulationModel {
         logger_id_ = engine.getMessageLogger().registerSubsystem(model + "_model") ;
     }
 
-    public String provideText() {
+    public String statusString() {
         return "" ;
     }
 

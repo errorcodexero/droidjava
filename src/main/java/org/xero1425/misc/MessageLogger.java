@@ -265,7 +265,13 @@ public final class MessageLogger
                     msgstr = format_.format(time_src_.getTime()) ;
                 }
 
-                msgstr += ": " + per.type_.toString() + ": " + per.message_;
+                msgstr += ": " + per.type_.toString() + ": "  ;
+                String subname = subsystems_.get(per.subsystem_) ;
+                if (subname != null)
+                    msgstr += subname + ": " ;
+                else
+                    msgstr += "MissingSubsystem: " ;
+                msgstr += per.message_;
                 for (final MessageDestination dest : destinations_) {
                     dest.displayMessage(per.type_, per.subsystem_, msgstr);
                 }

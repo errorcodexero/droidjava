@@ -35,7 +35,7 @@ public class ConveyorModel extends SimulationModel {
     }
 
     @Override
-    public String provideText() {
+    public String statusString() {
         return Integer.toString(getBallCount()) ;
     }
 

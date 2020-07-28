@@ -11,6 +11,12 @@ import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.SettingsValue;
 
 public class SimMotorController {
+    
+    String name_ ;
+    int handle_ ;
+    private SimulationModel model_ ;
+    private int count_ ;
+    
     public SimMotorController(SimulationModel model, String name) {
         model_ = model;
         name_ = name ;
@@ -109,8 +115,4 @@ public class SimMotorController {
         return true ;        
     }
 
-    String name_ ;
-    int handle_ ;
-    private SimulationModel model_ ;
-    private int count_ ;
 } ;
