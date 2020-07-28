@@ -63,8 +63,8 @@ public class TankDriveScrubCharAction extends TankDriveAction {
         getSubsystem().endPlot(plot_id_);
     }
 
-    public String toString() {
-        String ret = "TankDriveScrubCharAction";
+    public String toString(int indent) {
+        String ret = spaces(indent) + "TankDriveScrubCharAction";
         ret += " power=" + Double.toString(power_);
         ret += " angle=" + Double.toString(total_);
 

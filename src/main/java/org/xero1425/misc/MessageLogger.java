@@ -246,6 +246,52 @@ public final class MessageLogger
         return startMessage(mtype, NOSUBSYSTEM);
     }
 
+    private void outputMessage(final ThreadData per)
+    {
+        String msgstr;
+        if (time_src_ == null) {
+            msgstr = "???.????";
+        } else {
+            msgstr = format_.format(time_src_.getTime()) ;
+        }
+
+        msgstr += ": " + per.type_.toString() + ": "  ;
+        if (per.subsystem_ == 0)
+        {
+            msgstr += "global: ";
+        }
+        else
+        {
+            String subname = subsystems_.get(per.subsystem_) ;
+            if (subname != null)
+                msgstr += subname + ": " ;
+            else
+                msgstr += "missing(" + per.subsystem_ + "): " ;
+        }
+
+        StringBuilder bld = new StringBuilder() ;
+        for(int i = 0 ; i < msgstr.length() ; i++)
+            bld.append(' ') ;
+        String spaces = bld.toString() ;
+
+        String[] lines = per.message_.toString().split("\n") ;
+        boolean first = true ;
+        for(String line : lines) {
+            String msg ;
+
+            if (first)
+                msg = msgstr + line ;
+            else
+                msg = spaces + line ;
+
+            for (final MessageDestination dest : destinations_) {
+                dest.displayMessage(per.type_, per.subsystem_, msg);
+            }
+
+            first = false ;
+        }
+    }
+
     /// \brief ends the current message
     /// This method ends the current message and displays the message if the filter tests
     /// allow the message to be displayed.  The message is displayed by passing to each of
@@ -258,23 +304,7 @@ public final class MessageLogger
 
         if (per.message_.length() > 0) {
             if (enabled_types_.contains(per.type_) && subsystemEnabled(per.subsystem_)) {
-                String msgstr;
-                if (time_src_ == null) {
-                    msgstr = "???.????";
-                } else {
-                    msgstr = format_.format(time_src_.getTime()) ;
-                }
-
-                msgstr += ": " + per.type_.toString() + ": "  ;
-                String subname = subsystems_.get(per.subsystem_) ;
-                if (subname != null)
-                    msgstr += subname + ": " ;
-                else
-                    msgstr += "MissingSubsystem: " ;
-                msgstr += per.message_;
-                for (final MessageDestination dest : destinations_) {
-                    dest.displayMessage(per.type_, per.subsystem_, msgstr);
-                }
+                outputMessage(per) ;
             }
         }
 

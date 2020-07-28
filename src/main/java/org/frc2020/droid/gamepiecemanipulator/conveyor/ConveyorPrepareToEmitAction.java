@@ -52,8 +52,8 @@ public class ConveyorPrepareToEmitAction extends ConveyorStateAction {
     protected void conveyorActionFinished() {
     }
 
-    public String toString() {
-        return "ConveyorPrepareToEmitAction" ;
+    public String toString(int indent) {
+        return spaces(indent) + "ConveyorPrepareToEmitAction" ;
     }
 
     private double prepare_emit_intake_power_ ;

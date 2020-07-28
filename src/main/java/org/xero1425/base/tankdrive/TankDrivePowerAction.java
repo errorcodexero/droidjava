@@ -101,8 +101,8 @@ public class TankDrivePowerAction extends TankDriveAction {
         }        
     }
 
-    public String toString() {
-        String ret = "TankDrivePowerAction" ;
+    public String toString(int indent) {
+        String ret = spaces(indent) + "TankDrivePowerAction" ;
         ret += " left=" + Double.toString(left_) ;
         ret += " right=" + Double.toString(right_) ;
         if (timed_)

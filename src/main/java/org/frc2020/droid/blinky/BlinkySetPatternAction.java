@@ -37,8 +37,8 @@ public class BlinkySetPatternAction extends Action
     }
 
     @Override
-    public String toString() {
-        return "BlinkySetPatternAction " + pattern_.toString() ;
+    public String toString(int indent) {
+        return spaces(indent) + "BlinkySetPatternAction " + pattern_.toString() ;
     }
 
     private BlinkySubsystem sub_ ;

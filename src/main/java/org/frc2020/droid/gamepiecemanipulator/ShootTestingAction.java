@@ -89,8 +89,8 @@ public class ShootTestingAction extends Action {
     }
 
     @Override
-    public String toString() {
-        return "ShootTestingAction" ;
+    public String toString(int indent) {
+        return spaces(indent) + "ShootTestingAction" ;
     }
 
     private SimpleWidget makeWidget() {

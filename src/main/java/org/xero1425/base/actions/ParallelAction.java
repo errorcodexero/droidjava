@@ -70,24 +70,16 @@ public class ParallelAction extends ActionGroup
     }
 
     @Override
-    public String toString() {
-        String ret = "ParallelAction [[" ;
-        boolean first = true ;
+    public String toString(int indent) {
+        String ret = spaces(indent) + "ParallelAction [" ;
 
         for(Action act : actions_)
         {
-            if (!first)
-                ret += "," ;
-
-            ret += Integer.toString(act.getID()) ;
-            ret += "{{" ;
-            ret += act.toString() ;
-            ret += "}}" ;
-
-            first = false ;
+            ret += "\n" ;
+            ret += act.toString(indent + 4) ;
         }
-
-        ret += "]]" ;
+        ret += "\n" ;
+        ret += spaces(indent) + "]" ;
         return ret ;
     }    
 

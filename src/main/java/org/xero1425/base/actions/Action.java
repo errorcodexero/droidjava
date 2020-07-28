@@ -7,6 +7,12 @@ public abstract class Action
 {
     public static final String LoggerName = "action" ;
     
+    private boolean done_ ;
+    private MessageLogger logger_ ;
+    private int id_ ;
+    private static int current_id_ = 0 ;
+    private static int logger_id_ = -1 ;
+
     public Action(MessageLogger logger) {
         logger_ = logger ;
         id_ = current_id_++ ;
@@ -16,7 +22,7 @@ public abstract class Action
     public void start() throws Exception {
         logger_.startMessage(MessageType.Debug, logger_id_) ;
         logger_.add("starting action: ").add(id_) ;
-        logger_.add(", action ").add(toString()).endMessage();
+        logger_.add(", action ").add(toString(0)).endMessage();
         done_ = false ;
     }
 
@@ -31,7 +37,7 @@ public abstract class Action
         return id_ ;
     }
 
-    public abstract String toString() ;
+    public abstract String toString(int indent) ;
 
     public MessageLogger getMessageLogger() {
         return logger_ ;
@@ -41,7 +47,7 @@ public abstract class Action
         if (!isDone()) {
             logger_.startMessage(MessageType.Debug, logger_id_) ;
             logger_.add("canceling action: ").add(id_) ;
-            logger_.add(", action ").add(toString()).endMessage();
+            logger_.add(", action ").add(toString(0)).endMessage();
             done_ = true ;
         }
     }
@@ -56,13 +62,16 @@ public abstract class Action
     protected void setDone() {
         logger_.startMessage(MessageType.Debug, logger_id_) ;
         logger_.add("completing action: ").add(id_) ;
-        logger_.add(", action ").add(toString()).endMessage();        
+        logger_.add(", action ").add(toString(0)).endMessage();        
         done_ = true ;
     }
 
-    private boolean done_ ;
-    private MessageLogger logger_ ;
-    private int id_ ;
-    private static int current_id_ = 0 ;
-    private static int logger_id_ = -1 ;
+    protected String spaces(int n) {
+        StringBuilder str = new StringBuilder() ;
+
+        for(int i = 0 ; i < n ; i++)
+            str.append(' ') ;
+
+        return str.toString() ;
+    }
 } ;

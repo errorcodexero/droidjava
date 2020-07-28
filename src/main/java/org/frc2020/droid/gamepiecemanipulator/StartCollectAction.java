@@ -40,8 +40,8 @@ public class StartCollectAction extends Action {
     }
 
     @Override
-    public String toString() {
-        return "StartCollectAction" ;
+    public String toString(int indent) {
+        return spaces(indent) + "StartCollectAction" ;
     }
 
     private GamePieceManipulatorSubsystem sub_ ;

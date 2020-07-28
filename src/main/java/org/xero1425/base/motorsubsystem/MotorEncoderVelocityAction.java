@@ -115,8 +115,8 @@ public class MotorEncoderVelocityAction extends MotorAction {
     }
 
     @Override
-    public String toString() {
-        return "MotorEncoderVelocityAction " + Double.toString(target_) ;
+    public String toString(int indent) {
+        return spaces(indent) + "MotorEncoderVelocityAction " + Double.toString(target_) ;
     }
 
     private double target_ ;

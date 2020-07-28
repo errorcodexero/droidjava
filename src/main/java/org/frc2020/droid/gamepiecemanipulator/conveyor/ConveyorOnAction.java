@@ -28,8 +28,8 @@ public class ConveyorOnAction extends Action {
     }
 
     @Override
-    public String toString() {
-        String ret = "ConveyorPowerAction" ;
+    public String toString(int indent) {
+        String ret = spaces(indent) + "ConveyorPowerAction" ;
         ret += " intake = " + Double.toString(intake_) ;
         ret += " shooter = " + Double.toString(shooter_) ;
 

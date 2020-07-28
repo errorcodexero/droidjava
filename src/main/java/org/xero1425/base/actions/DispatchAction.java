@@ -28,8 +28,6 @@ public class DispatchAction extends ActionGroup {
         super.run();
 
         if (block_ && act_.isDone()) {
-            if (act_ instanceof TankDriveFollowPathAction)
-                System.out.println("hello");
             setDone();
         }
     }
@@ -44,13 +42,18 @@ public class DispatchAction extends ActionGroup {
     }
 
     @Override
-    public String toString() {
-        String ret = "DispatchAction[" + sub_.getName() + ", " + act_.toString();
-        if (block_)
-            ret += ", BLOCKING]";
-        else
-            ret += ", NONBLOCKING]";
+    public String toString(int indent) {
+        String ret = spaces(indent) + "DispatchAction [" ;
 
+        ret += "\n" ;
+        ret += spaces(indent + 4) + sub_.getName() + ", " + act_.toString(0);
+        if (block_)
+            ret += ", BLOCKING";
+        else
+            ret += ", NONBLOCKING";
+
+        ret += "\n" ;
+        ret += spaces(indent) + "]" ;
         return ret;
     }
 

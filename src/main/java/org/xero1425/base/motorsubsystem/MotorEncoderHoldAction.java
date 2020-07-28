@@ -52,8 +52,8 @@ public class MotorEncoderHoldAction extends MotorAction {
     }
 
     @Override
-    public String toString() {
-        String ret = "MotorEncoderHoldAction" ;
+    public String toString(int indent) {
+        String ret = spaces(indent) + "MotorEncoderHoldAction" ;
         if (has_explicit_target_)
             ret += "-explicit" ;
         else

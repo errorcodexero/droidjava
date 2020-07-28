@@ -56,8 +56,8 @@ public class FollowTargetAction extends MotorAction {
     }
 
     @Override
-    public String toString() {
-        return "FollowTargetAction" ;
+    public String toString(int indent) {
+        return spaces(indent) + "FollowTargetAction" ;
     }
 
     double threshold_ ;

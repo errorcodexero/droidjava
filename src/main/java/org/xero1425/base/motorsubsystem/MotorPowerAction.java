@@ -80,8 +80,8 @@ public class MotorPowerAction extends MotorAction {
         getSubsystem().setPower(0.0) ;
     }
 
-    public String toString() {
-        String ret = "MotorPowerAction" ;
+    public String toString(int indent) {
+        String ret = spaces(indent) + "MotorPowerAction" ;
         ret += " power=" + Double.toString(power_) ;
         if (timed_)
             ret += " duration=" + Double.toString(duration_) ;

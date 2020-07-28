@@ -53,8 +53,8 @@ public class ClimberMoveAction extends Action {
     }
 
     @Override
-    public String toString() {
-        return "ClimberMoveAction lifter=" + lift_.getPower() +
+    public String toString(int indent) {
+        return spaces(indent) + "ClimberMoveAction lifter=" + lift_.getPower() +
                 " traverse=" + trav_;
     }
 

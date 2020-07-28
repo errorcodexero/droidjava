@@ -121,8 +121,8 @@ public class ConveyorReceiveAction extends ConveyorStateAction {
     }
 
     @Override
-    public String toString() {
-        return "ConveyorReceiveAction" ;
+    public String toString(int indent) {
+        return spaces(indent) + "ConveyorReceiveAction" ;
     }
 
     @Override

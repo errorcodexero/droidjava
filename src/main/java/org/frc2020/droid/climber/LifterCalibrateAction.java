@@ -47,8 +47,8 @@ public class LifterCalibrateAction extends Action {
     }
 
     @Override
-    public String toString() {
-        return "LIfterCalibrationAction" ;
+    public String toString(int indent) {
+        return spaces(indent) + "LifterCalibrationAction" ;
     }
 
     private boolean checkForStopped() {

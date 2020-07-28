@@ -64,8 +64,8 @@ public class ConveyorPrepareToReceiveAction extends ConveyorStateAction {
     protected void conveyorActionFinished() {
     }
 
-    public String toString() {
-        return "ConveyorPrepareToReceive" ;
+    public String toString(int indent) {
+        return spaces(indent) + "ConveyorPrepareToReceive" ;
     }
 
     private double prepare_receive_intake_to_intake_power_ ;

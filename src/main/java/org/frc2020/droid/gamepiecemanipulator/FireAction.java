@@ -160,8 +160,8 @@ public class FireAction extends Action {
     }
 
     @Override
-    public String toString() {
-        return "FireAction" ;
+    public String toString(int indent) {
+        return spaces(indent) + "FireAction" ;
     }
 
     private void stopChildActions() {
