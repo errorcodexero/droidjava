@@ -92,7 +92,7 @@ public class SequenceAction extends ActionGroup
 
     @Override
     public String toString(int indent) {
-        String ret = spaces(indent) + "Sequence [" ;
+        String ret = prefix(indent) + "Sequence [" ;
 
         for(Action act : actions_)
         {
@@ -100,7 +100,7 @@ public class SequenceAction extends ActionGroup
             ret += act.toString(indent + 4) ;
         }
         ret += "\n" ;
-        ret += spaces(indent) + "]" ;
+        ret += prefix(indent) + "]" ;
         return ret ;
     }      
 

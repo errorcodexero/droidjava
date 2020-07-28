@@ -43,7 +43,7 @@ public class DispatchAction extends ActionGroup {
 
     @Override
     public String toString(int indent) {
-        String ret = spaces(indent) + "DispatchAction [" ;
+        String ret = prefix(indent) + "DispatchAction [" ;
 
         ret += "\n" ;
         ret += spaces(indent + 4) + sub_.getName() + ", " + act_.toString(0);

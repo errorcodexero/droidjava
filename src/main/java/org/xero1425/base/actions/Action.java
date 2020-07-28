@@ -21,9 +21,19 @@ public abstract class Action
 
     public void start() throws Exception {
         logger_.startMessage(MessageType.Debug, logger_id_) ;
-        logger_.add("starting action: ").add(id_) ;
-        logger_.add("\n").add(toString(0)).endMessage();
+        logger_.add("starting action: ") ;
+        addActionToMessage() ;
+
         done_ = false ;
+    }
+
+    private void addActionToMessage() {
+        String msg = toString(0) ;
+        if (msg.indexOf('\n') != -1) {
+            logger_.add("\n") ;
+        }
+
+        logger_.add(toString(0)).endMessage();
     }
 
     public void run() throws Exception {
@@ -46,8 +56,8 @@ public abstract class Action
     public void cancel() {
         if (!isDone()) {
             logger_.startMessage(MessageType.Debug, logger_id_) ;
-            logger_.add("canceling action: ").add(id_) ;
-            logger_.add("\n").add(toString(0)).endMessage();
+            logger_.add("canceling action: ") ;
+            addActionToMessage() ;
             done_ = true ;
         }
     }
@@ -61,8 +71,8 @@ public abstract class Action
 
     protected void setDone() {
         logger_.startMessage(MessageType.Debug, logger_id_) ;
-        logger_.add("completing action: ").add(id_) ;
-        logger_.add("\n").add(toString(0)).endMessage();        
+        logger_.add("completing action: ") ;
+        addActionToMessage() ;   
         done_ = true ;
     }
 

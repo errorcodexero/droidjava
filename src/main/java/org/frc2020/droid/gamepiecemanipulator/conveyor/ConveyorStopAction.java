@@ -33,7 +33,7 @@ public class ConveyorStopAction extends Action {
 
     @Override
     public String toString(int indent) {
-        return spaces(indent) + "ConveyorStopAction" ;
+        return prefix(indent) + "ConveyorStopAction" ;
     }
 
     ConveyorSubsystem sub_ ;

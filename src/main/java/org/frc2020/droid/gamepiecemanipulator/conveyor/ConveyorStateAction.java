@@ -93,7 +93,7 @@ public abstract class ConveyorStateAction extends Action {
             if (current_state_ == -1 || current_state_ == states_.length || prev != states_[current_state_]) {
                 logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
                 logger.add("conveyor state change: ") ;
-                logger.add("(").add(toString()).add(") ") ;
+                logger.add("(").add(toString(0)).add(") ") ;
                 logger.addQuoted(prev_state + ": " + prev.humanReadableName()) ;
                 logger.add(" -- > ") ;
                 if (current_state_ == -1 || current_state_ == states_.length)

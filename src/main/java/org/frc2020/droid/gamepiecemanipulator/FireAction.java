@@ -161,7 +161,7 @@ public class FireAction extends Action {
 
     @Override
     public String toString(int indent) {
-        return spaces(indent) + "FireAction" ;
+        return prefix(indent) + "FireAction" ;
     }
 
     private void stopChildActions() {

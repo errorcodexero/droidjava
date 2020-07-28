@@ -42,7 +42,7 @@ public class ConveyorEjectAction extends ConveyorStateAction {
     }
 
     public String toString(int indent) {
-        return spaces(indent) + "ConveyorEjectAction" ;
+        return prefix(indent) + "ConveyorEjectAction" ;
     }
 
     private double eject_intake_power_ ;

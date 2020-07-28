@@ -248,29 +248,34 @@ public final class MessageLogger
 
     private void outputMessage(final ThreadData per)
     {
-        String msgstr;
+        String timestr ;
+        String typestr ;
+        String substr ;
+
         if (time_src_ == null) {
-            msgstr = "???.????";
+            timestr = "???.????";
         } else {
-            msgstr = format_.format(time_src_.getTime()) ;
+            timestr = format_.format(time_src_.getTime()) ;
+            timestr += ": " ;
         }
 
-        msgstr += ": " + per.type_.toString() + ": "  ;
+        typestr = ": " + per.type_.toString() + ": "  ;
+
         if (per.subsystem_ == 0)
         {
-            msgstr += "global: ";
+            substr = "global: ";
         }
         else
         {
             String subname = subsystems_.get(per.subsystem_) ;
             if (subname != null)
-                msgstr += subname + ": " ;
+                substr = subname + ": " ;
             else
-                msgstr += "missing(" + per.subsystem_ + "): " ;
+                substr = "missing(" + per.subsystem_ + "): " ;
         }
 
         StringBuilder bld = new StringBuilder() ;
-        for(int i = 0 ; i < msgstr.length() ; i++)
+        for(int i = 0 ; i < timestr.length() + typestr.length() ; i++)
             bld.append(' ') ;
         String spaces = bld.toString() ;
 
@@ -280,9 +285,9 @@ public final class MessageLogger
             String msg ;
 
             if (first)
-                msg = msgstr + line ;
+                msg = timestr + typestr + substr + line ;
             else
-                msg = spaces + line ;
+                msg = spaces + substr + line ;
 
             for (final MessageDestination dest : destinations_) {
                 dest.displayMessage(per.type_, per.subsystem_, msg);

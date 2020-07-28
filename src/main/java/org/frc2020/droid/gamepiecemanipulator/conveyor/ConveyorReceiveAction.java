@@ -122,7 +122,7 @@ public class ConveyorReceiveAction extends ConveyorStateAction {
 
     @Override
     public String toString(int indent) {
-        return spaces(indent) + "ConveyorReceiveAction" ;
+        return prefix(indent) + "ConveyorReceiveAction" ;
     }
 
     @Override

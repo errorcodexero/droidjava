@@ -78,7 +78,7 @@ public class MotorEncoderGotoAction extends MotorAction {
     }
 
     public String toString(int indent) {
-        return spaces(indent) + "MotorEncoderGotoAction " + getSubsystem().getName() + " " + Double.toString(target_) ;
+        return prefix(indent) + "MotorEncoderGotoAction " + getSubsystem().getName() + " " + Double.toString(target_) ;
     }
 
     private double normalizePosition(MotorEncoderSubsystem me, double pos) {

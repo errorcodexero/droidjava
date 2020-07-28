@@ -36,7 +36,7 @@ public class DelayAction extends Action {
 
     @Override
     public String toString(int indent) {
-        return spaces(indent) + "DelayAction " + Double.toString(delay_) ;
+        return prefix(indent) + "DelayAction " + Double.toString(delay_) ;
     }
 
     private double delay_ ;

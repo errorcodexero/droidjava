@@ -81,7 +81,7 @@ public class MotorPowerAction extends MotorAction {
     }
 
     public String toString(int indent) {
-        String ret = spaces(indent) + "MotorPowerAction" ;
+        String ret = prefix(indent) + "MotorPowerAction" ;
         ret += " power=" + Double.toString(power_) ;
         if (timed_)
             ret += " duration=" + Double.toString(duration_) ;

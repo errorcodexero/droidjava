@@ -28,7 +28,7 @@ public class ConveyorSetBallCountAction extends Action {
 
     @Override
     public String toString(int indent) {
-        return spaces(indent) + "ConveyorSetBallCountAction " + count_ ;
+        return prefix(indent) + "ConveyorSetBallCountAction " + count_ ;
     }
 
     ConveyorSubsystem sub_ ;

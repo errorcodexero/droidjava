@@ -64,7 +64,7 @@ public class TankDriveScrubCharAction extends TankDriveAction {
     }
 
     public String toString(int indent) {
-        String ret = spaces(indent) + "TankDriveScrubCharAction";
+        String ret = prefix(indent) + "TankDriveScrubCharAction";
         ret += " power=" + Double.toString(power_);
         ret += " angle=" + Double.toString(total_);
 

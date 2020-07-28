@@ -88,7 +88,7 @@ public class ConveyorEmitAction extends ConveyorStateAction {
     }
 
     public String toString(int indent) {
-        return spaces(indent) + "ConveyorEmitAction" ;
+        return prefix(indent) + "ConveyorEmitAction" ;
     }
 
     private double emit_intake_power_ ;

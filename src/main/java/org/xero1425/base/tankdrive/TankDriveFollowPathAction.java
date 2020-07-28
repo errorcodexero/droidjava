@@ -160,7 +160,7 @@ public class TankDriveFollowPathAction extends TankDriveAction {
 
     @Override
     public String toString(int indent) {
-        String ret = spaces(indent) + "TankDriveFollowPath-" + path_name_ ;
+        String ret = prefix(indent) + "TankDriveFollowPath-" + path_name_ ;
         return ret ;
     }
 

@@ -71,7 +71,7 @@ public class ParallelAction extends ActionGroup
 
     @Override
     public String toString(int indent) {
-        String ret = spaces(indent) + "ParallelAction [" ;
+        String ret = prefix(indent) + "ParallelAction [" ;
 
         for(Action act : actions_)
         {
@@ -79,7 +79,7 @@ public class ParallelAction extends ActionGroup
             ret += act.toString(indent + 4) ;
         }
         ret += "\n" ;
-        ret += spaces(indent) + "]" ;
+        ret += prefix(indent) + "]" ;
         return ret ;
     }    
 
