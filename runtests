@@ -112,5 +112,17 @@ JARNAME=`basename $JARNAMEFULL`
 
 init
 findtests
+
+if [ "$#" -gt 0 ]; then
+    if [ "$1" == "--list" ]; then
+	echo "Available tests"
+	for TEST in ${TESTS[@]}; do
+	    echo "    " $TEST
+	done
+	exit 0 ;
+    fi
+fi
+
+
 prunetests $@
 runtests

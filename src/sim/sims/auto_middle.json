@@ -11,8 +11,8 @@
                     "values" : 
                     {
                         "start" : 3.0,
-                        "autonomous" : 18.0,
-                        "between" : 0.0,
+                        "autonomous" : 15.0,
+                        "between" : 2.0,
                         "teleop" : 0.0,
                         "fms": false
                     }
@@ -22,7 +22,7 @@
                     "instance" : "1",
                     "values" :
                     {
-                        "comment" : "set to automode to number 0, near side eight",
+                        "comment" : "set to automode to number 0, middle",
                         "axis0" : -0.4
                     }
                 },
