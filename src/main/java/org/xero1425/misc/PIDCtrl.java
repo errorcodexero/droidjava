@@ -1,7 +1,29 @@
 package org.xero1425.misc ;
 
+/// \file
+
+/// \brief This class implements a classic PIDF controller
+/// More information about this can be found @https://www.xerosw.org/dokuwiki/doku.php?id=software:followers
 public class PIDCtrl
 {
+    //
+    // The P constant
+    //
+    private double kp_ ;
+    private double ki_ ;
+    private double kd_ ;
+    private double kf_ ;
+    private double kmin_ ;
+    private double kmax_;
+    private double kimax_;
+
+    private boolean is_angle_;
+
+    private boolean has_last_error_;
+    private double last_error_;
+
+    private double integral_;
+
     public PIDCtrl(boolean isangle) {
         kp_ = 0 ;
         ki_ = 0 ;
@@ -89,18 +111,5 @@ public class PIDCtrl
         return error ;        
     }
 
-    private double kp_ ;
-    private double ki_ ;
-    private double kd_ ;
-    private double kf_ ;
-    private double kmin_ ;
-    private double kmax_;
-    private double kimax_;
 
-    private boolean is_angle_;
-
-    private boolean has_last_error_;
-    private double last_error_;
-
-    private double integral_;
 } ;
