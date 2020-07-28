@@ -92,6 +92,7 @@ public class TrapezoidalProfile {
     /// \param start_velocity the start velocity of the object
     /// \param end_velocity the end velocity of the object
     public void update(double dist, double start_velocity, double end_velocity) {
+        //TODO generalize support for any velocity
         start_velocity_ = Math.abs(start_velocity) ;
         end_velocity_ = Math.abs(end_velocity) ;
 
@@ -101,8 +102,12 @@ public class TrapezoidalProfile {
         ta_ = (maxv_ - start_velocity_) / maxa_ ;
 
         td_ = (end_velocity_ - maxv_) / maxd_ ;
+
+        //distance accelerating
         double da = start_velocity * ta_ + 0.5 * maxa_ * ta_ * ta_ ;
+        //distance decelerating
         double dd = maxv_ * td_ + 0.5 * maxd_ * td_ * td_ ;
+        
         tc_ = (distance_ - da - dd) / maxv_ ;
         type_ = "trapezoid" ;
 
@@ -142,7 +147,7 @@ public class TrapezoidalProfile {
         }
         else {
             //
-            // Ok, now figure out the crusing time
+            // Okay, now figure out the crusing time
             //
             actual_max_velocity_ = maxv_ ;                
             tc_ = (distance_ - da - dd) / maxv_ ;

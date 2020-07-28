@@ -34,7 +34,7 @@ public class Speedometer
     private List<Double> velocities_ ;
 
     //
-    // The set of times stores, up to max_samples_
+    // The set of times stored, up to max_samples_
     //
     private List<Double> times_ ;
 
@@ -70,7 +70,7 @@ public class Speedometer
 
     /// \brief update the speedometer with a new sample
     /// \param dtime the delta time since the last sample
-    /// \param the new position of the quantity being measured
+    /// \param pos the new position of the quantity being measured
     public void update(double dtime, double pos) {
         double vel ;
 
@@ -130,10 +130,12 @@ public class Speedometer
         return accel_ ;
     }
 
+    /// \returns the oldest distance
     private double getOldestDistance()  {
         return distances_.get(0) ;
     }
 
+    /// \returns the oldest velocity
     private double getOldestVelocity() {
         return velocities_.get(0) ;
     }    

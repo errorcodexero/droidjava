@@ -178,6 +178,7 @@ public final class SettingsParser
     /// \returns a settings value given its name
     public SettingsValue getOrNull(final String name) {
         return values_.get(name) ;
+        // this one isn't returning null even though it's described in brief ?? //
     }    
 
     private SettingsValue parseValue(String name, String s) {
@@ -186,7 +187,7 @@ public final class SettingsParser
         if (s.charAt(0) == 8237) {
             //
             // Copied in a value from the microsoft windows calculator.  This prepends
-            // the text with a hiddle right to left indicator (to indicate left to right display)
+            // the text with a middle right to left indicator (to indicate left to right display)
             // even when not needed.  Skip this character for now.
             //
             s = s.substring(1).trim() ;
@@ -207,7 +208,7 @@ public final class SettingsParser
         else
         {
             boolean isDouble = Pattern.matches("^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$", s);
-            boolean isInteger = Pattern.matches("^\\d*$", s) ;
+            boolean isInteger = Pattern.matches("^[-+]?\\d*$", s) ;
 
             if (isInteger) {
                 try 
