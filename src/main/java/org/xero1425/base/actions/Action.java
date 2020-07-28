@@ -22,7 +22,7 @@ public abstract class Action
     public void start() throws Exception {
         logger_.startMessage(MessageType.Debug, logger_id_) ;
         logger_.add("starting action: ").add(id_) ;
-        logger_.add(", action ").add(toString(0)).endMessage();
+        logger_.add("\n").add(toString(0)).endMessage();
         done_ = false ;
     }
 
@@ -47,7 +47,7 @@ public abstract class Action
         if (!isDone()) {
             logger_.startMessage(MessageType.Debug, logger_id_) ;
             logger_.add("canceling action: ").add(id_) ;
-            logger_.add(", action ").add(toString(0)).endMessage();
+            logger_.add("\n").add(toString(0)).endMessage();
             done_ = true ;
         }
     }
@@ -62,7 +62,7 @@ public abstract class Action
     protected void setDone() {
         logger_.startMessage(MessageType.Debug, logger_id_) ;
         logger_.add("completing action: ").add(id_) ;
-        logger_.add(", action ").add(toString(0)).endMessage();        
+        logger_.add("\n").add(toString(0)).endMessage();        
         done_ = true ;
     }
 
@@ -73,5 +73,9 @@ public abstract class Action
             str.append(' ') ;
 
         return str.toString() ;
+    }
+
+    protected String prefix(int n) {
+        return spaces(n) + id_ + ": " ;
     }
 } ;

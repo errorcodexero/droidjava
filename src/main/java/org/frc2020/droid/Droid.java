@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc2020.droid.automodes.DroidAutoController;
 import org.frc2020.droid.droidsubsystem.DroidRobotSubsystem;
+import org.frc2020.droid.gamepiecemanipulator.conveyor.ConveyorSubsystem;
+import org.frc2020.models.ConveyorModel;
 import org.xero1425.simulator.engine.ModelFactory;
 import org.xero1425.simulator.engine.SimulationEngine;
 import org.xero1425.base.XeroRobot;
@@ -41,7 +43,7 @@ public class Droid extends XeroRobot {
         if (ret != null)
             return ret ;
 
-        return "disabled" ;
+        return "collect1_shoot" ;
     }
 
     protected void addRobotSimulationModels() {
@@ -77,33 +79,33 @@ public class Droid extends XeroRobot {
     protected void enableMessages() {
         MessageLogger logger = getMessageLogger() ;
 
-        // logger.enableLogging(Action.LoggerName) ;
-        // logger.enableLogging(XeroPathManager.LoggerName) ;
-        // logger.enableLogging(SettingsParser.LoggerName) ;
-        // logger.enableLogging(DroidOISubsystem.SubsystemName) ;
-        // logger.enableLogging(ConveyorSubsystem.SubsystemName) ;
-        // logger.enableLogging(ConveyorSubsystem.SensorLoggerName) ;        
-        // logger.enableLogging(GamePieceManipulatorSubsystem.SubsystemName) ;
-        // logger.enableLogging(IntakeSubsystem.SubsystemName) ;
-        // logger.enableLogging(ShooterSubsystem.SubsystemName) ;
-        // logger.enableLogging(ClimberSubsystem.SubsystemName) ;
-        // logger.enableLogging(BlinkySubsystem.SubsystemName) ;
-        // logger.enableLogging(DroidLimeLightSubsystem.LoggerSubsystemNameName) ;
-        // logger.enableLogging(DroidRobotSubsystem.TankdriveLoggerName) ;
-        // logger.enableLogging(TargetTrackerSubsystem.SubsystemName) ;
-        // logger.enableLogging(TurretSubsystem.SubsystemName) ;
-        // logger.enableLogging(XeroPathManager.LoggerName) ;
-        // logger.enableLogging(SettingsParser.LoggerName) ;
-        // logger.enableLogging(XeroRobot.LoggerName) ;
+        // logger.enableSubsystem(Action.LoggerName) ;
+        // logger.enableSubsystem(XeroPathManager.LoggerName) ;
+        // logger.enableSubsystem(SettingsParser.LoggerName) ;
+        // logger.enableSubsystem(DroidOISubsystem.SubsystemName) ;
+        logger.enableSubsystem(ConveyorSubsystem.SubsystemName) ;
+        logger.enableSubsystem(ConveyorSubsystem.SensorLoggerName) ;        
+        // logger.enableSubsystem(GamePieceManipulatorSubsystem.SubsystemName) ;
+        // logger.enableSubsystem(IntakeSubsystem.SubsystemName) ;
+        // logger.enableSubsystem(ShooterSubsystem.SubsystemName) ;
+        // logger.enableSubsystem(ClimberSubsystem.SubsystemName) ;
+        // logger.enableSubsystem(BlinkySubsystem.SubsystemName) ;
+        // logger.enableSubsystem(DroidLimeLightSubsystem.LoggerSubsystemNameName) ;
+        // logger.enableSubsystem(DroidRobotSubsystem.TankdriveLoggerName) ;
+        // logger.enableSubsystem(TargetTrackerSubsystem.SubsystemName) ;
+        // logger.enableSubsystem(TurretSubsystem.SubsystemName) ;
+        // logger.enableSubsystem(XeroPathManager.LoggerName) ;
+        // logger.enableSubsystem(SettingsParser.LoggerName) ;
+        // logger.enableSubsystem(XeroRobot.LoggerName) ;
 
         logger.enableSubsystem(Action.LoggerName) ;
 
         if (RobotBase.isSimulation()) {
-            // logger.enableLogging(SimulationEngine.LoggerName) ;
-            // logger.enableLogging("tankdrive_model") ;
-            // logger.enableLogging("conveyor_model") ;
-            // logger.enableLogging(ConveyorModel.LogBallPosition) ;
-            // logger.enableLogging("shooter_model") ;
+            logger.enableSubsystem(SimulationEngine.LoggerName) ;
+            logger.enableSubsystem("tankdrive_model") ;
+            logger.enableSubsystem("conveyor_model") ;
+            logger.enableSubsystem(ConveyorModel.LogBallPosition) ;
+            logger.enableSubsystem("shooter_model") ;
         }
     }
 

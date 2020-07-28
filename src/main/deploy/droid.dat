@@ -497,7 +497,7 @@ shoottest:hold                                                true
 # These control test modes for the robot.  They are used by the DroidTestTuneMode automode.  Note
 # this active value below is ignored if we are connected to the field.
 #
-auto:testmode:active                                          false
+auto:testmode:active                                          true
 auto:testmode:which                                           21
 auto:testmode:distance                                        0
 auto:testmode:power                                           0.5

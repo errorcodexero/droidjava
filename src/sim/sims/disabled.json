@@ -10,7 +10,7 @@
                     "instance" : "1",
                     "values" : 
                     {
-                        "start" : 200.0,
+                        "start" : 10.0,
                         "autonomous" : 0.0,
                         "between" : 0.0,
                         "teleop" : 0.0,

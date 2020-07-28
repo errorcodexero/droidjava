@@ -13,6 +13,23 @@ public class SimulationEngine {
     public static final String LoggerName = "simulator" ;
     public static final String NetworkTableName = "XeroSim" ;
 
+
+    private static SimulationEngine the_one_ = null ;
+    
+    private DriverStationSim dssim_ = null ;
+    private MessageLogger logger_ ;
+    private XeroRobot robot_ ;
+    private int logger_id_ ;
+
+    private ModelManager models_ ;
+    private EventsManager events_ ;
+
+    private double delta_t_ ;
+
+    private List<SimulationModel> active_models_ ;
+    private int failed_count_ ;
+    private int passed_count_ ;    
+
     private SimulationEngine(XeroRobot robot, MessageLogger logger) {
         logger_ = logger ;
         robot_ = robot ;
@@ -187,19 +204,4 @@ public class SimulationEngine {
         readEventsFile("src/sim/sims/" + simfile + ".json") ;
     }
 
-    private static SimulationEngine the_one_ = null ;
-    
-    private DriverStationSim dssim_ = null ;
-    private MessageLogger logger_ ;
-    private XeroRobot robot_ ;
-    private int logger_id_ ;
-
-    private ModelManager models_ ;
-    private EventsManager events_ ;
-
-    private double delta_t_ ;
-
-    private List<SimulationModel> active_models_ ;
-    private int failed_count_ ;
-    private int passed_count_ ;
 }
