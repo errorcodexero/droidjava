@@ -48,10 +48,31 @@ public class ShooterModel extends SimulationModel {
     }
 
     public void run(double dt) {
+        if (getEngine().getSimulationTime() > 9.25) {
+            MessageLogger logger = getEngine().getMessageLogger() ;
+            logger.startMessage(MessageType.Debug, getLoggerID()) ;
+            logger.add("shooter model:") ;
+            logger.endMessage();
+        }
+
+        //
+        // Get the power from the motor
+        //
         double power = motors_.getPower() ;
+
+        //
+        // Calculate the speed in RPM
+        //
         double calc_speed = power / kv_ ;
+
+        //
+        // Calculate the delta speed between the desired speed and the current speed
+        //
         double delta = calc_speed - current_speed_rpm_ ;
 
+        //
+        // Move as much as we can to the desired speed.
+        //
         if (Math.abs(delta) > rpm_change_per_second_ * dt) {
             if (delta < 0.0)
                 delta = - rpm_change_per_second_ ;
@@ -59,8 +80,21 @@ public class ShooterModel extends SimulationModel {
                 delta = rpm_change_per_second_ ;
         }
 
+        //
+        // Add the delta to the current speed so our new current speed is as close
+        // as we can be to the speed that the motor power should drive
+        //
         current_speed_rpm_ += delta ;
-        double deltarev = current_speed_rpm_ * 2.0 / 3.0 /  60.0 * dt ;
+
+        //
+        // Calculate the incremental number of revolutions (usually a fraction) that have occured 
+        // since the last simulation loop.  Assume the new speed for the motor
+        //
+        double deltarev = current_speed_rpm_ / 60.0 * dt ;
+
+        //
+        // Add the incremental number of revolutions to the total traveled so far
+        //
         revs_ += deltarev ;
 
         MessageLogger logger = getEngine().getMessageLogger() ;
@@ -74,7 +108,7 @@ public class ShooterModel extends SimulationModel {
         logger.add("revs", revs_) ;
         logger.endMessage();
 
-        motors_.setEncoder(revs_) ;
+        motors_.setEncoder(revs_ * 42) ;
     }
     
     private SimMotorController motors_ ;

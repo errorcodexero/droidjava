@@ -15,6 +15,46 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.SettingsParser;
 
 public class FireAction extends Action {
+    
+    GamePieceManipulatorSubsystem sub_ ;
+    TargetTrackerSubsystem tracker_ ;
+    TurretSubsystem turret_ ;
+    TankDriveSubsystem db_ ;
+
+    ShooterSubsystem.HoodPosition hood_pos_ ;
+
+    private boolean is_firing_ ;
+    private double db_velocity_threshold_ ;
+
+    private double hood_down_a_ ;
+    private double hood_down_b_ ;
+    private double hood_down_c_ ;
+    
+    private double hood_up_a_ ;
+    private double hood_up_b_ ;
+    private double hood_up_c_ ;
+
+    private double max_hood_up_distance_ ;
+    private double min_hood_down_distance_ ;
+
+    private ShooterVelocityAction shooter_velocity_action_ ;
+    private ConveyorEmitAction emit_action_ ;
+
+    private double start_time_ ;
+    private int plot_id_ ;
+    static final String[] plot_columns_ = { 
+        "time",
+
+        "is_firing",
+        "ready",
+        "ready_except_shooter",
+
+        "limelight_ready",
+        "turret_ready",
+        "shooter_ready",
+        "drivebase_ready",
+    } ;
+    
     public FireAction(GamePieceManipulatorSubsystem gp, TargetTrackerSubsystem tracker, 
                     TurretSubsystem turret, TankDriveSubsystem db) throws Exception {
         super(gp.getRobot().getMessageLogger()) ;
@@ -194,42 +234,4 @@ public class FireAction extends Action {
         shooter_velocity_action_.setTarget(target);
     }
 
-    GamePieceManipulatorSubsystem sub_ ;
-    TargetTrackerSubsystem tracker_ ;
-    TurretSubsystem turret_ ;
-    TankDriveSubsystem db_ ;
-
-    ShooterSubsystem.HoodPosition hood_pos_ ;
-
-    private boolean is_firing_ ;
-    private double db_velocity_threshold_ ;
-
-    private double hood_down_a_ ;
-    private double hood_down_b_ ;
-    private double hood_down_c_ ;
-    
-    private double hood_up_a_ ;
-    private double hood_up_b_ ;
-    private double hood_up_c_ ;
-
-    private double max_hood_up_distance_ ;
-    private double min_hood_down_distance_ ;
-
-    private ShooterVelocityAction shooter_velocity_action_ ;
-    private ConveyorEmitAction emit_action_ ;
-
-    private double start_time_ ;
-    private int plot_id_ ;
-    static final String[] plot_columns_ = { 
-        "time",
-
-        "is_firing",
-        "ready",
-        "ready_except_shooter",
-
-        "limelight_ready",
-        "turret_ready",
-        "shooter_ready",
-        "drivebase_ready",
-    } ;
 }

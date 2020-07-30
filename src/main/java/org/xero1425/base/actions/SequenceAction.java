@@ -100,7 +100,7 @@ public class SequenceAction extends ActionGroup
             ret += act.toString(indent + 4) ;
         }
         ret += "\n" ;
-        ret += prefix(indent) + "]" ;
+        ret += spaces(indent) + "]" ;
         return ret ;
     }      
 

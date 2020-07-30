@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc2020.droid.automodes.DroidAutoController;
 import org.frc2020.droid.droidsubsystem.DroidRobotSubsystem;
+import org.frc2020.droid.gamepiecemanipulator.GamePieceManipulatorSubsystem;
 import org.frc2020.droid.gamepiecemanipulator.conveyor.ConveyorSubsystem;
+import org.frc2020.droid.gamepiecemanipulator.shooter.ShooterSubsystem;
 import org.frc2020.models.ConveyorModel;
 import org.xero1425.simulator.engine.ModelFactory;
 import org.xero1425.simulator.engine.SimulationEngine;
@@ -83,11 +85,11 @@ public class Droid extends XeroRobot {
         // logger.enableSubsystem(XeroPathManager.LoggerName) ;
         // logger.enableSubsystem(SettingsParser.LoggerName) ;
         // logger.enableSubsystem(DroidOISubsystem.SubsystemName) ;
-        logger.enableSubsystem(ConveyorSubsystem.SubsystemName) ;
-        logger.enableSubsystem(ConveyorSubsystem.SensorLoggerName) ;        
-        // logger.enableSubsystem(GamePieceManipulatorSubsystem.SubsystemName) ;
+        // logger.enableSubsystem(ConveyorSubsystem.SubsystemName) ;
+        // logger.enableSubsystem(ConveyorSubsystem.SensorLoggerName) ;        
+        logger.enableSubsystem(GamePieceManipulatorSubsystem.SubsystemName) ;
         // logger.enableSubsystem(IntakeSubsystem.SubsystemName) ;
-        // logger.enableSubsystem(ShooterSubsystem.SubsystemName) ;
+        logger.enableSubsystem(ShooterSubsystem.SubsystemName) ;
         // logger.enableSubsystem(ClimberSubsystem.SubsystemName) ;
         // logger.enableSubsystem(BlinkySubsystem.SubsystemName) ;
         // logger.enableSubsystem(DroidLimeLightSubsystem.LoggerSubsystemNameName) ;
@@ -101,10 +103,10 @@ public class Droid extends XeroRobot {
         logger.enableSubsystem(Action.LoggerName) ;
 
         if (RobotBase.isSimulation()) {
-            logger.enableSubsystem(SimulationEngine.LoggerName) ;
-            logger.enableSubsystem("tankdrive_model") ;
-            logger.enableSubsystem("conveyor_model") ;
-            logger.enableSubsystem(ConveyorModel.LogBallPosition) ;
+            // logger.enableSubsystem(SimulationEngine.LoggerName) ;
+            // logger.enableSubsystem("tankdrive_model") ;
+            // logger.enableSubsystem("conveyor_model") ;
+            // logger.enableSubsystem(ConveyorModel.LogBallPosition) ;
             logger.enableSubsystem("shooter_model") ;
         }
     }

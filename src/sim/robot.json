@@ -140,7 +140,7 @@
                 "shooter:motor:1:type" : "sparkmax-brushless",
                 "shooter:motor:2:index" : 6,
                 "shooter:motor:2:type" : "sparkmax-brushless",
-                "kv" : 0.0001311853912,
+                "kv" : 0.000131185,
                 "change" : 10000000.0
             }
         },
