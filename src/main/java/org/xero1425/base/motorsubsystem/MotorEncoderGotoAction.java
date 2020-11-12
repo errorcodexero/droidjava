@@ -17,7 +17,7 @@ public class MotorEncoderGotoAction extends MotorAction {
 
         SettingsParser settings = sub.getRobot().getSettingsParser() ;
         profile_ = new TrapezoidalProfile(settings, sub.getName() + ":goto") ;
-        plot_id_ = sub.initPlot(sub.getName() + "-" + toString()) ;
+        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;
     }
 
     public MotorEncoderGotoAction(MotorEncoderSubsystem sub, String target, boolean addhold)
@@ -27,7 +27,7 @@ public class MotorEncoderGotoAction extends MotorAction {
 
         SettingsParser settings = sub.getRobot().getSettingsParser() ;
         profile_ = new TrapezoidalProfile(settings, sub.getName() + ":goto") ;
-        plot_id_ = sub.initPlot(sub.getName() + "-" + toString()) ;        
+        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;        
     }
 
     public void start() throws Exception {
