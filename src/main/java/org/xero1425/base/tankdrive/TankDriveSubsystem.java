@@ -204,7 +204,7 @@ public class TankDriveSubsystem extends Subsystem {
         logger.add(" powerl", left_power_).add(" powerr", right_power_) ;
         logger.add(" ticksl", ticks_left_).add(" ticksr ", ticks_right_) ;
         logger.add(" distl", dist_l_).add(" distr", dist_r_) ;
-        logger.add(" lvelocity", getLeftVelocity()).add(" rvelocity", getRightVelocity()) ;
+        logger.add(" velocityl", getLeftVelocity()).add(" velocityr", getRightVelocity()) ;
         logger.add(" speed", getVelocity()).add(" angle", getAngle()) ;
         logger.endMessage();
     }

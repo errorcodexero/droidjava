@@ -121,7 +121,7 @@ public class TankDriveFollowPathAction extends TankDriveAction {
             plot_data_[13] = left_follower_.getLastError() ;                                                
 
             // Right side
-            plot_data_[14] = lpos ;
+            plot_data_[14] = rpos ;
             plot_data_[15] = td.getRightDistance() - right_start_ ;
             plot_data_[16] = rvel ;
             plot_data_[17] = td.getRightVelocity() ;
@@ -155,6 +155,8 @@ public class TankDriveFollowPathAction extends TankDriveAction {
     public void cancel() {
         super.cancel() ;
         index_ = path_.getSize() ;
+
+        getSubsystem().setPower(0.0, 0.0) ;
         getSubsystem().endPlot(plot_id_);
     }
 

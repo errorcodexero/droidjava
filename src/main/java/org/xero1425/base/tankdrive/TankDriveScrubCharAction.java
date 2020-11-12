@@ -42,7 +42,7 @@ public class TankDriveScrubCharAction extends TankDriveAction {
             logger.add("Total Angle (NaVX) ").add(angle);
             logger.add(", left ").add(distl);
             logger.add(", right ").add(distr);
-            logger.add("effective Width ").add(effr * 2.0);
+            logger.add(", effective Width ").add(effr * 2.0);
             logger.endMessage();
         } else {
             final Double[] data = new Double[7];

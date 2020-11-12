@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ ! -e "$JAVA_HOME" ]; then
+    echo "The JAVA_HOME environment variable is not set to a valid Java distribution."
+    exit 1
+fi
+
 echo -n "Cleaning the build to ensure a fresh build ... "
 ./gradlew --console=plain clean > /dev/null 2>&1
 echo done

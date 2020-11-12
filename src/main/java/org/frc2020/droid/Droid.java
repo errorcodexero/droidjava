@@ -87,9 +87,9 @@ public class Droid extends XeroRobot {
         // logger.enableSubsystem(DroidOISubsystem.SubsystemName) ;
         // logger.enableSubsystem(ConveyorSubsystem.SubsystemName) ;
         // logger.enableSubsystem(ConveyorSubsystem.SensorLoggerName) ;        
-        logger.enableSubsystem(GamePieceManipulatorSubsystem.SubsystemName) ;
+        // logger.enableSubsystem(GamePieceManipulatorSubsystem.SubsystemName) ;
         // logger.enableSubsystem(IntakeSubsystem.SubsystemName) ;
-        logger.enableSubsystem(ShooterSubsystem.SubsystemName) ;
+        // logger.enableSubsystem(ShooterSubsystem.SubsystemName) ;
         // logger.enableSubsystem(ClimberSubsystem.SubsystemName) ;
         // logger.enableSubsystem(BlinkySubsystem.SubsystemName) ;
         // logger.enableSubsystem(DroidLimeLightSubsystem.LoggerSubsystemNameName) ;
@@ -107,7 +107,7 @@ public class Droid extends XeroRobot {
             // logger.enableSubsystem("tankdrive_model") ;
             // logger.enableSubsystem("conveyor_model") ;
             // logger.enableSubsystem(ConveyorModel.LogBallPosition) ;
-            logger.enableSubsystem("shooter_model") ;
+            // logger.enableSubsystem("shooter_model") ;
         }
     }
 
