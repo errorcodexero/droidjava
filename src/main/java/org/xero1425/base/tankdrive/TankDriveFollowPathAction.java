@@ -23,7 +23,7 @@ public class TankDriveFollowPathAction extends TankDriveAction {
         turn_correction_ = drive.getRobot().getSettingsParser().get("tankdrive:follower:turn_correction").getDouble() ;
         angle_correction_ = drive.getRobot().getSettingsParser().get("tankdrive:follower:angle_correction").getDouble() ;
 
-        plot_id_ = drive.initPlot(toString()) ;
+        plot_id_ = drive.initPlot(toString(0)) ;
         plot_data_ = new Double[plot_columns_.length] ;
     }
 

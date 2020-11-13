@@ -14,10 +14,6 @@ public class ConveyorStopAction extends Action {
         super.start() ;
 
         count_++ ;
-
-        if (count_ == 3) {
-            System.out.println("done") ;
-        }
         sub_.setMotorsPower(0.0, 0.0) ;
         setDone() ;
     }
