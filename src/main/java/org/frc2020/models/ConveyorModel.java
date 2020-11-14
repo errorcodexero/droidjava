@@ -30,6 +30,7 @@ public class ConveyorModel extends SimulationModel {
         super(engine, model, inst);
 
         fmt_ = new DecimalFormat("00.000") ;
+        fired_ = 0 ;
 
         ball_position_logger_id_ = engine.getMessageLogger().registerSubsystem(LogBallPosition) ;
     }
@@ -58,6 +59,7 @@ public class ConveyorModel extends SimulationModel {
 
         table.getEntry("intakepower").setNumber(intake_.getPower()) ;
         table.getEntry("shooterpower").setNumber(shooter_.getPower()) ;
+        table.getEntry("Fired").setNumber(fired_) ;
 
         printConveyor();
     }
@@ -499,6 +501,8 @@ public class ConveyorModel extends SimulationModel {
             }
             i-- ;
         }
+
+        fired_++ ;
     }
 
     private void deleteBallFromIntake() {
@@ -535,6 +539,8 @@ public class ConveyorModel extends SimulationModel {
     private double minpos_ ;
     private double maxpos_ ;
     private double midpos_ ;
+
+    private double fired_  ;
 
     private IntakeModel intake_model_ ;
 }
