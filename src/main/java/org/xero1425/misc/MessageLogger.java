@@ -256,7 +256,6 @@ public final class MessageLogger
             timestr = "???.????";
         } else {
             timestr = format_.format(time_src_.getTime()) ;
-            timestr += ": " ;
         }
 
         typestr = ": " + per.type_.toString() + ": "  ;

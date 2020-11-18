@@ -16,7 +16,6 @@ public class ConveyorPrepareToEmitAction extends ConveyorStateAction {
                 return act.getSubsystem().isEmpty(); }),
 
             new BranchState(DoneLabel, (ConveyorStateAction act) -> {
-                boolean b = act.getSubsystem().isStagedForFire() ;
                 return act.getSubsystem().isStagedForFire(); }),
 
             new DoWorkState("set motors prepare emit power", (ConveyorStateAction act) -> {
