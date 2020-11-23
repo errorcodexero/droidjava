@@ -295,16 +295,7 @@ public class DroidOIModel extends SimulationModel {
         NetworkTable table_ = NetworkTableInstance.getDefault().getTable(SimulationEngine.NetworkTableName).getSubTable(SubTableName) ;
         NetworkTable butable = table_.getSubTable(bname) ;
         butable.getEntry("state").setBoolean(value) ;
-    }    
-
-    // private void defineAxis(int index, String name, double init) {
-    //     String bname = "axis" + index ;
-
-    //     NetworkTable table_ = NetworkTableInstance.getDefault().getTable(SimulationEngine.NetworkTableName).getSubTable(SubTableName) ;
-    //     NetworkTable butable = table_.getSubTable(bname) ;
-    //     butable.getEntry("name").setString(name) ;
-    //     butable.getEntry("state").setNumber(init) ;
-    // }    
+    }
 
     private int index_ ;
 
