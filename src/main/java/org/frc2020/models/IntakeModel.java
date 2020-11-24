@@ -1,5 +1,7 @@
 package org.frc2020.models;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import org.xero1425.simulator.engine.SimulationEngine;
 import org.xero1425.simulator.engine.SimulationModel;
 import org.xero1425.simulator.models.SimMotorController;
@@ -10,6 +12,8 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.SettingsValue;
 
 public class IntakeModel extends SimulationModel {
+    private static final String SubTableName = "intake" ;
+
     public IntakeModel(SimulationEngine engine, String model, String inst) {
         super(engine, model, inst);
     }
@@ -50,6 +54,10 @@ public class IntakeModel extends SimulationModel {
         else if (ticks_ > 1600)
             ticks_ = 1600 ;
         updown_.setEncoder(ticks_ / (double)SparkMaxMotorController.TicksPerRevolution) ;
+
+        NetworkTable table = NetworkTableInstance.getDefault().getTable(SimulationEngine.NetworkTableName).getSubTable(SubTableName) ;
+        table.getEntry("angle").setNumber(ticks_) ;
+        table.getEntry("speed").setNumber(spin_.getPower()) ;
     }
 
     public boolean isDownAndRunning() {

@@ -3,12 +3,18 @@ package org.frc2020.models;
 import org.xero1425.simulator.engine.SimulationEngine;
 import org.xero1425.simulator.engine.SimulationModel;
 import org.xero1425.simulator.models.SimMotorController;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.SettingsValue;
 
 public class ShooterModel extends SimulationModel {
+    private static final String SubTableName = "shooter" ;
+
     public ShooterModel(SimulationEngine engine, String model, String inst) {
         super(engine, model, inst);
     }
@@ -109,6 +115,9 @@ public class ShooterModel extends SimulationModel {
         logger.endMessage();
 
         motors_.setEncoder(revs_ * 42) ;
+
+        NetworkTable table = NetworkTableInstance.getDefault().getTable(SimulationEngine.NetworkTableName).getSubTable(SubTableName) ;
+        table.getEntry("speed").setNumber(current_speed_rpm_) ;
     }
     
     private SimMotorController motors_ ;
