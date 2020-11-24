@@ -14,7 +14,8 @@
                         "start" : 1.0,
                         "autonomous" : 30.0,
                         "between" : 0.0,
-                        "teleop" : 0.0
+                        "teleop" : 0.0,
+                        "fms" : false
                     }
                 },
                 {
@@ -22,8 +23,8 @@
                     "instance" : "1",
                     "values" : 
                     {
-                        "xpos" : 0.0,
-                        "ypos" : 0.0,
+                        "xpos" : 26.0,
+                        "ypos" : 162.0,
                         "angle" : 0.0
                     }
                 }                
