@@ -31,7 +31,7 @@ function initwin()
 function initmacos()
 {
     echo "initialzing for macos"
-    export JAVA_HOME=~/wpilib/2020/jdk
+    export JAVA_HOME="/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home"
     export PATH=build/tmp/jniExtractDir:$PATH
     export DYLD_LIBRARY_PATH=build/tmp/jniExtractDir:$DYLD_LIBRARY_PATH
     JPATH="-Djava.library.path=build/tmp/jniExtractDir:/Users/bwg/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."

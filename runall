@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export JAVA_HOME="C:/users/public/wpilib/2020/jdk"
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+
 
 echo -n "Cleaning the build to ensure a fresh build ... "
 ./gradlew --console=plain clean > /dev/null 2>&1
