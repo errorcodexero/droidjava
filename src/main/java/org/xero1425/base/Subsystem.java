@@ -110,21 +110,16 @@ public class Subsystem {
         Disabled,               ///< Display only when the robot is disabled
     } ;
 
-    /// \brief Create a new subsystem
-    /// \param parent the parent for the current subsystem
-    /// \param name the name of the current subsystem
-    public Subsystem(final Subsystem parent, final String name) {
-        parent_ = parent;
+    private Subsystem(XeroRobot robot, final Subsystem parent, final String name) {
         name_ = name;
+        parent_ = parent;
         children_ = new ArrayList<Subsystem>();
+        robot_ = robot ;
+
         action_ = null;
         default_action_ = null;
-        if (parent != null) {
-            robot_ = parent.getRobot();
-            logger_id_ = getRobot().getMessageLogger().registerSubsystem(name);
-        } else {
-            logger_id_ = -1;
-        }
+
+        logger_id_ = getRobot().getMessageLogger().registerSubsystem(name);
 
         finished_default_ = false;
         total_time_ = 0.0;
@@ -134,20 +129,29 @@ public class Subsystem {
         fmt_ = new DecimalFormat("00.000");
         verbose_ = false;
 
-        if (getRobot() != null) {
-            String pname = name_ + ":verbose";
-            SettingsParser p = getRobot().getSettingsParser();
-            try {
-                if (p.isDefined(pname) && p.get(pname).isBoolean() && p.get(pname).getBoolean())
-                    verbose_ = true;
-            } catch (MissingParameterException e) {
-                // Should never happen
-                verbose_ = false ;
-            } catch (BadParameterTypeException e) {
-                // Should never happen
-                verbose_ = false ;
-            }
-        }
+        String pname = name_ + ":verbose";
+        SettingsParser p = getRobot().getSettingsParser();
+        try {
+            if (p.isDefined(pname) && p.get(pname).isBoolean() && p.get(pname).getBoolean())
+                verbose_ = true;
+        } catch (MissingParameterException e) {
+            // Should never happen
+            verbose_ = false ;
+        } catch (BadParameterTypeException e) {
+            // Should never happen
+            verbose_ = false ;
+        }        
+    }
+
+    public Subsystem(XeroRobot robot, final String name) {
+        this(robot, null, name) ;
+    }
+
+    /// \brief Create a new subsystem
+    /// \param parent the parent for the current subsystem
+    /// \param name the name of the current subsystem
+    public Subsystem(final Subsystem parent, final String name) {
+        this(parent.getRobot(), parent, name) ;
     }
 
     /// \brief returns a property for the simulation system.
@@ -571,12 +575,6 @@ public class Subsystem {
     /// \param id the handle for a plot returned by initPlot()
     public void endPlot(int id) {
         getRobot().getPlotManager().endPlot(id) ;
-    }
-
-    /// \brief set the robot object for the subsystem.
-    /// \param robot the robot object for the main robot class
-    protected void setRobot(XeroRobot robot) {
-        robot_ = robot ;
     }
 
     /// \brief stub version of the computeMyState method.

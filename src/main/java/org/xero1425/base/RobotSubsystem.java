@@ -7,8 +7,7 @@ import org.xero1425.base.tankdrive.TankDriveSubsystem;
 public class RobotSubsystem extends Subsystem
 {
     public RobotSubsystem(XeroRobot robot, String name) throws Exception {
-        super(null, name) ;
-        setRobot(robot) ;
+        super(robot, name) ;
 
         oi_ = null ;
         db_ = null ;
