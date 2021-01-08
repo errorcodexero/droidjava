@@ -1,7 +1,6 @@
 package org.xero1425.base.motors ;
 
 import java.util.Map ;
-
 import java.util.HashMap ;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
@@ -10,22 +9,39 @@ import org.xero1425.misc.SettingsParser;
 import org.xero1425.misc.SettingsValue;
 import org.xero1425.misc.SettingsValue.SettingsType;
 
+
+/// \file
+/// This file contains the implementation of the MotorFactory.
+/// The motor factory is used to create and initialize motors for all subsystems
+/// based on data stored in the parameters file.
+///
+
+/// \brief A motor factory for the robot.
+/// The motor factory creates motors based on entries in the settings file.  The
+/// returned motors are high level motor classes (MotorController) that hides the
+/// actual type of motor being used.  Groups of motors that operate in parallel, 
+/// like multiple motors on a single side of the drivebase, are returned as a single
+/// MotorController object that manages the motors as a group.
+///
 public class MotorFactory
-{
+{    
+    private MessageLogger logger_ ;
+    private SettingsParser settings_ ;
+    private Map<Integer, MotorController> motors_ ;
+
+    /// \brief This method creates a new motor factory.
+    /// \param logger the message logger for the robot
+    /// \param settings the settings file for the robot
     public MotorFactory(MessageLogger logger, SettingsParser settings) {
         logger_ = logger ;
         settings_ = settings;
         motors_ = new HashMap<Integer, MotorController>() ;
     }
 
-    private void errorMessage(String id, String msg) {
-        logger_.startMessage(MessageType.Error) ;
-        logger_.add("error creating motor '") ;
-        logger_.add(id) ;
-        logger_.add("' - ").add(msg) ;
-        logger_.endMessage();
-    }
-
+    /// \brief This method creates a new motor based on the settings in the settings file.
+    /// 
+    /// \param name the base name of the motor
+    /// \param id the ID of the motor in the settings file
     public MotorController createMotor(String name, String id) {
         MotorController ret = null ;
 
@@ -86,6 +102,14 @@ public class MotorFactory
         return ret ;
     }
 
+    private void errorMessage(String id, String msg) {
+        logger_.startMessage(MessageType.Error) ;
+        logger_.add("error creating motor '") ;
+        logger_.add(id) ;
+        logger_.add("' - ").add(msg) ;
+        logger_.endMessage();
+    }
+
     private MotorController createSingleMotor(String name, String id) throws BadParameterTypeException, BadMotorRequestException {
         String idparam = id + ":type" ;
         String canparam = id + ":canid" ;
@@ -121,23 +145,23 @@ public class MotorFactory
 
         if (type.equals("talon_srx"))
         {
-            ctrl = new CTREMotorController(type, canid, CTREMotorController.MotorType.TalonSRX) ;
+            ctrl = new CTREMotorController(name, canid, CTREMotorController.MotorType.TalonSRX) ;
         }
         else if (type.equals("talon_fx"))
         {
-            ctrl = new CTREMotorController(type, canid, CTREMotorController.MotorType.TalonFX) ;
+            ctrl = new CTREMotorController(name, canid, CTREMotorController.MotorType.TalonFX) ;
         }
         else if (type.equals("victor_spx"))
         {
-            ctrl = new CTREMotorController(type, canid, CTREMotorController.MotorType.VictorSPX) ;
+            ctrl = new CTREMotorController(name, canid, CTREMotorController.MotorType.VictorSPX) ;
         }
         else if (type.equals("sparkmax_brushless"))
         {
-            ctrl = new SparkMaxMotorController(type, canid, true) ;
+            ctrl = new SparkMaxMotorController(name, canid, true) ;
         }
         else if (type.equals("sparmmax_brushed"))
         {
-            ctrl = new SparkMaxMotorController(type, canid, false) ;
+            ctrl = new SparkMaxMotorController(name, canid, false) ;
         }
         else
         {
@@ -203,7 +227,4 @@ public class MotorFactory
         return v.getBoolean() ;
     }
 
-    private MessageLogger logger_ ;
-    private SettingsParser settings_ ;
-    private Map<Integer, MotorController> motors_ ;
 } ;

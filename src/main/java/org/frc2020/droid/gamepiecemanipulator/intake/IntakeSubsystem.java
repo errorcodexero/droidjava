@@ -18,5 +18,5 @@ public class IntakeSubsystem extends MotorEncoderSubsystem {
         collector_.set(p) ;
     }
 
-    private MotorController collector_ ;    
+    private MotorController collector_ ;
 }

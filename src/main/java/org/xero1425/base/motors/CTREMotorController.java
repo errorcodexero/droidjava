@@ -1,5 +1,11 @@
 package org.xero1425.base.motors;
 
+/// \file
+/// This file conatins the implementation of the CTREMotorController class.  This class
+/// is derived from the MotorController class and supports the CTRE devices including the TalonFX,
+/// the TalonSRX, and the VictorSPX.
+///
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
@@ -13,6 +19,7 @@ import edu.wpi.first.hal.SimDevice;
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.wpilibj.RobotBase;
 
+/// \brief This class is MotorController class that supports the TalonFX, TalonSRX, and the VictorSPX motors.
 public class CTREMotorController extends MotorController
 {
     public final static String SimDeviceName = "CTREMotorController" ;

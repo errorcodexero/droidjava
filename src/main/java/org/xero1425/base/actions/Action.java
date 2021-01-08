@@ -3,16 +3,26 @@ package org.xero1425.base.actions ;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType; 
 
+/// \file
+
+
+/// \brief This is the base classs for an action that is executed by a Subsystem.
 public abstract class Action
 {
+    // The name of the messages in the logger
     public static final String LoggerName = "action" ;
     
+    // If true, the action is complete
     private boolean done_ ;
+
+    // A reference to the message logger
     private MessageLogger logger_ ;
+    
     private int id_ ;
     private static int current_id_ = 0 ;
     private static int logger_id_ = -1 ;
 
+    ///
     public Action(MessageLogger logger) {
         logger_ = logger ;
         id_ = current_id_++ ;
@@ -88,4 +98,4 @@ public abstract class Action
     protected String prefix(int n) {
         return spaces(n) + id_ + ": " ;
     }
-} ;
+}

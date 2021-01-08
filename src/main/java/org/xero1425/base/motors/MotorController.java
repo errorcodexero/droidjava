@@ -1,5 +1,6 @@
 package org.xero1425.base.motors ;
 
+
 public abstract class MotorController
 {
     public final static String SimPowerParamName = "Power" ;
@@ -43,7 +44,7 @@ public abstract class MotorController
 
     public void setCurrentLimit(double limit) throws BadMotorRequestException {
         throw new BadMotorRequestException(this, "motor does not support setCurrentLimit()") ;        
-    }    
+    }
 
     private String name_ ;
 }

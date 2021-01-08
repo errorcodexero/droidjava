@@ -17,7 +17,7 @@ public class MotorSubsystem extends Subsystem
     }
 
     public boolean isRunning() {
-        return power_ > epsilon ;
+        return Math.abs(power_) > epsilon ;
     }
 
     @Override
